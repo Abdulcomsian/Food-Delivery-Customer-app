@@ -1,0 +1,54 @@
+[
+  {
+    "discount": "30%",
+    "preparation": "20-25 mins",
+    "name": "Burger King",
+    "price": 18,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  },
+  {
+    "preparation": "20-25 mins",
+    "name": "Burger King",
+    "price": 99,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  },
+  {
+    "discount": "30%",
+    "preparation": "20-25 mins",
+    "name": "Burger King",
+    "price": 100,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  },
+  {
+    "delivery": 100,
+    "preparation": "20-25 mins",
+    "name": "Burger King",
+    "price": 500,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  },
+  {
+    "until": "12:00 PM",
+    "preparation": "20-25 mins",
+    "name": "Burger King",
+    "price": 70,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  },
+  {
+    "preparation": "20-50 mins",
+    "name": "Burger King",
+    "price": 11,
+    "address": "72 Cecil Street,NORTH RYDE",
+    "rating": 4.6,
+    "reviewers": 200
+  }
+]
