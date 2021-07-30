@@ -15,7 +15,7 @@ export default (state = InitialUserState, {type, payload}: reducerArgument) => {
       return {
         ...state,
         loggedIn: true,
-        detail: payload.detail,
+        detail: payload,
       };
     }
     case ActionType.USER_LOGOUT: {

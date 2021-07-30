@@ -12,9 +12,11 @@ import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Images, TextFamily} from '../constants';
 import Badge from './badge';
-import {useDispatch} from 'react-redux';
+import {navigate} from '../navigator/navigationHelper';
+import {useDispatch, useSelector} from 'react-redux';
 import Actions from '../redux/actions';
 import getShadow from '../utils/shadow';
+import {InitialUserInterface} from '../constants/interfaces';
 const activeOpacity = 0.85;
 const HeaderA = ({
   navigation,
@@ -29,16 +31,15 @@ const HeaderA = ({
 }) => {
   const {top} = useSafeAreaInsets();
   const dispatch = useDispatch();
+  const {loggedIn} = useSelector(
+    ({USER}: {USER: InitialUserInterface}) => USER,
+  );
   return (
     <View
       style={[HeaderAStyle.headerCont, {height: 56 + top, paddingTop: top}]}>
       <View style={HeaderAStyle.headerSubCont}>
         <View style={HeaderAStyle.LeftCont}>
-          <TouchableOpacity
-            //onPress={navigation.openDrawer}
-            activeOpacity={activeOpacity}
-            //style={HeaderAStyle.Btn}
-          >
+          <TouchableOpacity activeOpacity={activeOpacity}>
             <Text style={HeaderAStyle.smallText}>Deliver to</Text>
             <View style={HeaderAStyle.rowify}>
               <Text style={HeaderAStyle.normalText}>Selected Location</Text>
@@ -51,7 +52,6 @@ const HeaderA = ({
             <Fragment>
               {renderChild1 ? (
                 <TouchableOpacity
-                  //onPress={() => navigation.navigate('notifications')}
                   style={HeaderAStyle.nBtn}
                   activeOpacity={activeOpacity}>
                   <Badge count={7} />
@@ -66,8 +66,9 @@ const HeaderA = ({
               <TouchableOpacity
                 style={HeaderAStyle.Btn}
                 onPress={() => {
-                  // navigation.navigate('profile')
-                  Actions.toggleBottomLogin()(dispatch);
+                  loggedIn
+                    ? navigate('profile')
+                    : Actions.toggleBottomLogin()(dispatch);
                 }}
                 activeOpacity={activeOpacity}>
                 <Image source={Images.avatar} style={HeaderAStyle.avatar} />
@@ -119,7 +120,7 @@ const SearchBar = () => {
           onPress={() => {
             Actions.toggleBottomFilter()(dispatch);
           }}
-          activeOpacity={0.85}>
+          activeOpacity={activeOpacity}>
           <Image style={SearchBarStyle.icon} source={Images.filter} />
         </TouchableOpacity>
       </View>

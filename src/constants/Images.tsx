@@ -20,8 +20,9 @@ export default {
   leftArrow: require('../assets/icons/arrowLeft.png'),
   location: require('../assets/icons/LocationPinWhite.png'),
   check: require('../assets/icons/check.png'),
+  check2: require('../assets/images/check.png'),
   money: require('../assets/icons/money.png'),
- 
+  waiting: require('../assets/icons/waiting.png'),
   //-------------------
   visa: require('../assets/icons/visa.png'),
   enableLocation: require('../assets/images/locator.png'),
@@ -31,4 +32,6 @@ export default {
   food: require('../assets/images/RectangleFood.png'),
   foodx: require('../assets/images/toast.png'),
   basket: require('../assets/images/basket.png'),
+  preparing: require('../assets/images/chef.png'),
+  rider: require('../assets/images/rider.png'),
 };

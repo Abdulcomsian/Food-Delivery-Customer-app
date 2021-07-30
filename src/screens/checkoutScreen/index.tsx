@@ -10,6 +10,7 @@ import {
   Platform,
 } from 'react-native';
 import {Colors, Images, TextFamily} from '../../constants';
+import {Modals} from '../../components';
 import {useSelector} from 'react-redux';
 import {
   OrdersStatesInterface,
@@ -36,8 +37,13 @@ const CheckOutScreen = ({
     }),
   );
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
+  const [visible, setVisible] = useState<boolean>(false);
   return (
     <View style={styles.ScreenContain}>
+      <Modals.OrderSuccessFullyReceived
+        visible={visible}
+        setVisiblity={setVisible}
+      />
       <ScrollView
         style={{flex: 1}}
         contentContainerStyle={{
@@ -123,6 +129,9 @@ const CheckOutScreen = ({
         </TouchableOpacity>
       </ScrollView>
       <TouchableOpacity
+        onPress={() => {
+          setVisible(true);
+        }}
         activeOpacity={0.85}
         style={[
           {

@@ -132,14 +132,14 @@ const CARTFilledScreen = ({
                         fontSize: 14,
                         fontFamily: TextFamily.ROBOTO_REGULAR,
                       }}>
-                      {name}
+                      {name} x{qty}
                     </Text>
                     <Text
                       style={{
                         color: Colors.Grey7,
                         fontSize: 14,
                         fontFamily: TextFamily.ROBOTO_REGULAR,
-                      }}>{`£ ${getPriceFormat(price * qty)}`}</Text>
+                      }}>{`£ ${getPriceFormat(price)}`}</Text>
                   </View>
                 </View>
               );

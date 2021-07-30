@@ -81,7 +81,7 @@ const TabBar = ({
 
           if (!isFocused && !event.defaultPrevented) {
             objectIsEmpty(cart)
-              ? navigation.navigate('cart')
+              ? navigation.navigate('orderServing') //navigation.navigate('cart')
               : navigate('cartFilled');
           }
         }}
@@ -104,11 +104,13 @@ const TabBar = ({
           alignItems: 'center',
           zIndex: 200,
         }}>
-        <Badge count={cartArr.length} style={{right: 10, top: 10}} />
-        <Image
-          style={{width: 30, height: 30, resizeMode: 'contain'}}
-          source={Images.cart}
-        />
+        <Fragment>
+          <Badge count={cartArr.length} style={{right: 10, top: 10}} />
+          <Image
+            style={{width: 30, height: 30, resizeMode: 'contain'}}
+            source={Images.cart}
+          />
+        </Fragment>
       </TouchableOpacity>
       <View
         style={{
@@ -134,9 +136,13 @@ const TabBar = ({
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              if (route.name === 'notification' || route.name === 'account') {
+              if (route.name === 'account') {
                 loggedIn
-                  ? navigation.navigate(route.name)
+                  ? navigate('profile')
+                  : Actions.toggleBottomLogin()(dispatch);
+              } else if (route.name === 'notification') {
+                loggedIn
+                  ? navigate('alerts')
                   : Actions.toggleBottomLogin()(dispatch);
               } else navigation.navigate(route.name);
             }

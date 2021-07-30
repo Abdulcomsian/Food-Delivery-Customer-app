@@ -1,5 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Fragment, useEffect} from 'react';
-import {StatusBar, Platform} from 'react-native';
+import {
+  StatusBar,
+  Platform,
+  Button,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
@@ -10,10 +17,14 @@ import getShadow from '../utils/shadow';
 //======================[Screens]====================================
 import Home from './TabNav';
 import SignUp from '../screens/signUp';
+import OrderServing from '../screens/orderServing';
 import ForgotPass from '../screens/forgotPassword';
 import RestaurantMenu from '../screens/restaurantMenu';
 import cartFilled from '../screens/cartFilledScreen';
 import checkout from '../screens/checkoutScreen';
+import Profile from '../screens/profile';
+import EditProfile from '../screens/editProfile ';
+import Notication from '../screens/notifications';
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();
 
@@ -32,6 +43,86 @@ const Stack = () => {
     <Fragment>
       <Navigator headerMode={'screen'}>
         <Screen name={'home'} component={Home} options={{headerShown: false}} />
+        <Screen
+          name={'orderServing'}
+          component={OrderServing}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
+            headerTitle: '',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: getShadow(1),
+            headerTintColor: Colors.dark,
+          }}
+        />
+        <Screen
+          name={'profile'}
+          component={Profile}
+          options={({navigation, route}) => ({
+            headerTitleAlign: 'center',
+            headerRight: () => (
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => navigation.navigate('editProfile')}
+                style={{paddingHorizontal: 15}}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    textAlign: 'center',
+                    fontFamily: TextFamily.ROBOTO_REGULAR,
+                    color: Colors.red,
+                  }}>
+                  Edit
+                </Text>
+              </TouchableOpacity>
+            ),
+            headerBackTitleVisible: false,
+            headerTitle: 'My Profile',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: {...getShadow(1)},
+            headerTintColor: Colors.dark,
+          })}
+        />
+        <Screen
+          name={'editProfile'}
+          component={EditProfile}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
+            headerTitle: 'Edit Profile',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: {...getShadow(1)},
+            headerTintColor: Colors.dark,
+          }}
+        />
+        <Screen
+          name={'alerts'}
+          component={Notication}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
+            headerTitle: 'Notifications',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: getShadow(1),
+            headerTintColor: Colors.dark,
+          }}
+        />
         <Screen
           name={'signUp'}
           component={SignUp}
@@ -68,7 +159,7 @@ const Stack = () => {
             headerTintColor: Colors.dark,
           }}
         />
-         <Screen
+        <Screen
           name={'checkout'}
           component={checkout}
           options={{

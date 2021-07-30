@@ -1,22 +1,11 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, Fragment} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  ImageBackground,
-} from 'react-native';
-import {Colors, Images, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {getPriceFormat} from '../../utils/libs';
-import {Cards, Headers, BottomSheet} from '../../components';
+import React from 'react';
+import {View, StyleSheet, Image, Text, ScrollView} from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import textFamily from '../../constants/textFamily';
-const CARTScreen = ({
+import {Headers} from '../../components';
+import {Colors, Images, TextFamily} from '../../constants';
+const CartScreen = ({
   navigation,
   route,
 }: {
@@ -24,11 +13,11 @@ const CARTScreen = ({
   route: object;
 }) => {
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
-  const cart = 'empty';
+  let status = 'ontheWay';
   return (
     <View style={styles.ScreenContain}>
-      <Headers.HeaderB title={'My Order'} />
-      {cart === 'empty' ? (
+      <Headers.HeaderB title={getStatus(status)} />
+      {status === 'empty' ? (
         <View style={[styles.emptyCont, {paddingBottom: bottom + 100}]}>
           <Image
             source={Images.basket}
@@ -45,7 +34,23 @@ const CARTScreen = ({
           contentContainerStyle={{
             paddingTop: 10,
             paddingBottom: bottom + 100,
-          }}></ScrollView>
+            justifyContent: 'center',
+            alignItems: 'center',
+            paddingHorizontal: 15,
+          }}>
+          <Image
+            source={Images.preparing}
+            style={{width: WP(85), height: WP(85), resizeMode: 'contain'}}
+          />
+          <Text style={styles.title2}>Your Order Is Preparing</Text>
+          <Text style={styles.text}>
+            Good food is always cooking! Go ahead, order some yummy items from
+            the menu.
+          </Text>
+          <View style={styles.borderedView}>
+            <Text style={styles.text2}>Expected Time : 20 Min</Text>
+          </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -58,11 +63,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 30,
   },
+  cont: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
   title: {
     fontFamily: TextFamily.ROBOTO_MEDIUM,
     fontSize: 24,
     textAlign: 'center',
     color: Colors.Grey5,
+    marginBottom: 16,
+  },
+  title2: {
+    fontFamily: TextFamily.ROBOTO_BLACK,
+    fontSize: 24,
+    textAlign: 'center',
+    color: Colors.green,
+    marginTop: 35,
     marginBottom: 16,
   },
   text: {
@@ -71,6 +90,36 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.Grey5,
   },
+  borderedView: {
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.red,
+    marginTop: 38,
+    backgroundColor: Colors.Grey00,
+  },
+  text2: {
+    fontFamily: TextFamily.ROBOTO_MEDIUM,
+    fontSize: 24,
+    margin: 20,
+    textAlign: 'center',
+    color: Colors.red,
+  },
   ScreenContain: {flex: 1, backgroundColor: Colors.white},
 });
-export default CARTScreen;
+
+const getStatus = (status?: string) => {
+  let text = 'My Order';
+  switch (status) {
+    case 'preparing':
+      text = 'Order Preparing';
+      break;
+    case 'ontheWay':
+      text = 'Track Your Order';
+      break;
+    default:
+      text = 'My Order';
+      break;
+  }
+  return text;
+};
+export default CartScreen;

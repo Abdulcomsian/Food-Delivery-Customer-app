@@ -263,6 +263,14 @@ const BottomSheetLogin = ({status = false}: {status?: boolean}) => {
           placeHolder="Password"
         />
         <Buttons.ButtonA
+          onPress={() => {
+            Actions.userAuthenticate({
+              name: 'Ímran Noor',
+              phone: '03035191910',
+              avatar: '',
+            })(dispatch);
+            handleIt(false);
+          }}
           title={'Login'}
           style={{
             backgroundColor: Colors.red,
