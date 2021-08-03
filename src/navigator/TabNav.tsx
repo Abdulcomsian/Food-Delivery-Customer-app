@@ -81,7 +81,7 @@ const TabBar = ({
 
           if (!isFocused && !event.defaultPrevented) {
             objectIsEmpty(cart)
-              ? navigation.navigate('orderServing') //navigation.navigate('cart')
+              ? navigation.navigate('orderServing') //phoneVerification') //phoneNumber') //navigation.navigate('cart')
               : navigate('cartFilled');
           }
         }}

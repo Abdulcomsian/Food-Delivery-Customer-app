@@ -5,9 +5,9 @@ import {
   View,
   ViewStyle,
   StyleSheet,
-  TextStyle,
   TouchableOpacity,
   KeyboardTypeOptions,
+  Text,
 } from 'react-native';
 import {Colors, TextFamily} from '../constants';
 import {getCustomData} from '../utils/libs';
@@ -96,6 +96,42 @@ const InputDatePicker = ({
     </View>
   );
 };
+const InputB = ({
+  border = true,
+  secureTextEntry = false,
+  keyboardType = 'default',
+  value = '',
+  setValue = (e: string) => {},
+  style = {},
+  placeHolder = '',
+}: {
+  border?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+  value?: string;
+  setValue?: Function;
+  style?: ViewStyle;
+  placeHolder?: string;
+}) => (
+  <View
+    style={{
+      ...Styles.inputView2,
+      ...style,
+      ...{borderBottomWidth: border ? 1 : 0},
+    }}>
+    <Text style={Styles.placeholder}>{placeHolder}</Text>
+    <TextInput
+      keyboardType={keyboardType}
+      returnKeyType={keyboardType === 'phone-pad' ? 'done' : 'default'}
+      secureTextEntry={secureTextEntry}
+      value={value}
+      onChangeText={setValue}
+      placeholder={placeHolder}
+      placeholderTextColor={Colors.Grey7}
+      style={Styles.inputStyle2}
+    />
+  </View>
+);
 const Styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
@@ -113,6 +149,30 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginVertical: 5,
   },
+  inputView2: {
+    paddingBottom: 20,
+    borderBottomWidth: 1,
+    borderColor: Colors.Grey5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+    //paddingHorizontal: 20,
+    width: '100%',
+    marginBottom: 20,
+  },
+  inputStyle2: {
+    textAlignVertical: 'center',
+    //width: '100%',
+    color: Colors.dark,
+    fontSize: 17,
+    letterSpacing: -0.41,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
+  placeholder: {
+    color: Colors.Grey5,
+    fontSize: 17,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
   inputStyle: {
     height: '90%',
     textAlignVertical: 'center',
@@ -122,4 +182,4 @@ const Styles = StyleSheet.create({
     fontFamily: TextFamily.ROBOTO_REGULAR,
   },
 });
-export default {InputA, InputDatePicker};
+export default {InputA, InputB, InputDatePicker};

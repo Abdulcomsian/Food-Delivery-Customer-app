@@ -30,3 +30,4 @@ export default {
   transparentBlack: '#00000088',
   black: '#000000',
 };
+//#8E8E931F

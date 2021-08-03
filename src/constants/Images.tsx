@@ -25,6 +25,7 @@ export default {
   waiting: require('../assets/icons/waiting.png'),
   //-------------------
   visa: require('../assets/icons/visa.png'),
+  camera: require('../assets/icons/camera.png'),
   enableLocation: require('../assets/images/locator.png'),
   passwordReset: require('../assets/images/lock-overturning.png'),
   avatar: require('../assets/images/Avatar.png'),

@@ -24,7 +24,11 @@ import cartFilled from '../screens/cartFilledScreen';
 import checkout from '../screens/checkoutScreen';
 import Profile from '../screens/profile';
 import EditProfile from '../screens/editProfile ';
+import pastOrders from '../screens/pastOrders';
+import orderDetails from '../screens/orderDetail';
 import Notication from '../screens/notifications';
+import PhoneVerification from '../screens/phoneVerify';
+import PhoneNumber from '../screens/phoneNumber';
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();
 
@@ -105,6 +109,47 @@ const Stack = () => {
             },
             headerStyle: {...getShadow(1)},
             headerTintColor: Colors.dark,
+          }}
+        />
+        <Screen
+          name={'myOrders'}
+          component={pastOrders}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
+            headerTitle: 'My Orders',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: {...getShadow(1)},
+            headerTintColor: Colors.dark,
+          }}
+        />
+        <Screen
+          name={'orderDetail'}
+          component={orderDetails}
+          options={{headerShown: false}}
+        />
+        <Screen
+          name={'phoneVerification'}
+          component={PhoneVerification}
+          options={{
+            headerStyle: getShadow(0),
+            headerBackTitleVisible: false,
+            headerTintColor: Colors.dark,
+            headerTitle: '',
+          }}
+        />
+        <Screen
+          name={'phoneNumber'}
+          component={PhoneNumber}
+          options={{
+            headerStyle: getShadow(0),
+            headerBackTitleVisible: false,
+            headerTintColor: Colors.dark,
+            headerTitle: '',
           }}
         />
         <Screen

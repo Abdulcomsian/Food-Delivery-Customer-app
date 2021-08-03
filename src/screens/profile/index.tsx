@@ -10,12 +10,12 @@ import {
   Platform,
 } from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 import {Images, Colors, TextFamily} from '../../constants';
 import getShadow from '../../utils/shadow';
 import {InitialUserInterface} from '../../constants/interfaces';
 import {useSelector} from 'react-redux';
+import {navigate} from '../../navigator/navigationHelper';
 const ProfileScreen = ({
   navigation,
   route,
@@ -40,8 +40,8 @@ const ProfileScreen = ({
           paddingBottom: Platform.OS === 'android' ? 10 : bottom + 10,
         }}>
         {[
-          {title: 'My Orders', nav: ''},
-          {title: 'My Favorite', nav: ''},
+          {title: 'My Orders', nav: 'myOrders'},
+          {title: 'My Favorite', nav: 'wishlist'},
           {title: 'My Notification', nav: ''},
           {title: 'Terms & Condition', nav: ''},
           {title: 'Help', nav: ''},
@@ -54,7 +54,12 @@ const ProfileScreen = ({
 };
 
 const ProfileBtn = ({title = '', nav}: {title: string; nav: string}) => (
-  <TouchableOpacity style={styles.profileBtn}>
+  <TouchableOpacity
+    style={styles.profileBtn}
+    activeOpacity={0.85}
+    onPress={() => {
+      nav && navigate(nav);
+    }}>
     <Text style={styles.profileBtnText}>{title}</Text>
     <Image
       source={Images.redRightArrow}
