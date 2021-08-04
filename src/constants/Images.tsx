@@ -1,5 +1,7 @@
 export default {
+  aim: require('../assets/icons/aim.png'),
   home: require('../assets/icons/home.png'),
+  house: require('../assets/icons/house.png'),
   homeTabbed: require('../assets/icons/homeTabbed.png'),
   favorite: require('../assets/icons/Favorites.png'),
   favoriteTabbed: require('../assets/icons/FavoritesTabbed.png'),
@@ -22,7 +24,11 @@ export default {
   check: require('../assets/icons/check.png'),
   check2: require('../assets/images/check.png'),
   money: require('../assets/icons/money.png'),
+  bic: require('../assets/icons/bic.png'),
   waiting: require('../assets/icons/waiting.png'),
+  ok: require('../assets/icons/confirm.png'),
+  ok2: require('../assets/icons/confirmr.png'),
+  cross: require('../assets/icons/cancel.png'),
   //-------------------
   visa: require('../assets/icons/visa.png'),
   camera: require('../assets/icons/camera.png'),

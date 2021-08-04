@@ -132,6 +132,40 @@ const InputB = ({
     />
   </View>
 );
+const InputC = ({
+  border = true,
+  secureTextEntry = false,
+  keyboardType = 'default',
+  value = '',
+  setValue = (e: string) => {},
+  style = {},
+  placeHolder = '',
+  area = false,
+}: {
+  area?: boolean;
+  border?: boolean;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+  value?: string;
+  setValue?: Function;
+  style?: ViewStyle;
+  placeHolder?: string;
+}) => (
+  <TextInput
+    keyboardType={keyboardType}
+    returnKeyType={keyboardType === 'phone-pad' ? 'done' : 'default'}
+    secureTextEntry={secureTextEntry}
+    value={value}
+    numberOfLines={area ? 3 : 1}
+    onChangeText={setValue}
+    placeholder={placeHolder}
+    placeholderTextColor={Colors.Grey7}
+    style={[
+      Styles.inputView3,
+      {height: area ? Styles.inputView3.height * 3 : Styles.inputView3.height},
+    ]}
+  />
+);
 const Styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
@@ -160,6 +194,15 @@ const Styles = StyleSheet.create({
     width: '100%',
     marginBottom: 20,
   },
+  inputView3: {
+    height: 48,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: Colors.Grey1,
+    width: '100%',
+    marginBottom: 10,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
   inputStyle2: {
     textAlignVertical: 'center',
     //width: '100%',
@@ -182,4 +225,4 @@ const Styles = StyleSheet.create({
     fontFamily: TextFamily.ROBOTO_REGULAR,
   },
 });
-export default {InputA, InputB, InputDatePicker};
+export default {InputA, InputB, InputC, InputDatePicker};

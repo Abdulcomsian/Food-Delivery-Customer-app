@@ -29,6 +29,9 @@ import orderDetails from '../screens/orderDetail';
 import Notication from '../screens/notifications';
 import PhoneVerification from '../screens/phoneVerify';
 import PhoneNumber from '../screens/phoneNumber';
+import MapScreen from '../screens/mapScreen';
+import NewAddressScreen from '../screens/newAddressScreen';
+import AllAddressScreen from '../screens/allAddressScreen';
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();
 
@@ -150,6 +153,38 @@ const Stack = () => {
             headerBackTitleVisible: false,
             headerTintColor: Colors.dark,
             headerTitle: '',
+          }}
+        />
+        <Screen
+          name={'map'}
+          component={MapScreen}
+          options={{
+            headerShown: false,
+            headerStyle: getShadow(0),
+            headerBackTitleVisible: false,
+            headerTintColor: Colors.dark,
+            headerTitle: '',
+          }}
+        />
+        <Screen
+          name={'newAddress'}
+          component={NewAddressScreen}
+          options={{
+            //headerShown: false,
+            headerStyle: getShadow(1),
+            headerBackTitleVisible: false,
+            headerTintColor: Colors.dark,
+            headerTitle: 'New Address',
+          }}
+        />
+        <Screen
+          name={'allAddress'}
+          component={AllAddressScreen}
+          options={{
+            headerStyle: getShadow(1),
+            headerBackTitleVisible: false,
+            headerTintColor: Colors.dark,
+            headerTitle: 'My Addresses',
           }}
         />
         <Screen

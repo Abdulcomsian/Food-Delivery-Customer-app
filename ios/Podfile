@@ -11,8 +11,8 @@ target 'Africeat' do
     # to enable hermes on iOS, change `false` to `true` and then install pods
     :hermes_enabled => true
   )
-  #rn_maps_path = '../node_modules/react-native-maps'
-  #pod 'react-native-google-maps', :path => rn_maps_path
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
   permissions_path = '../node_modules/react-native-permissions/ios'
   pod 'Permission-LocationAccuracy', :path => "#{permissions_path}/LocationAccuracy"
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
