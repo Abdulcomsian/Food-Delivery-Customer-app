@@ -42,7 +42,7 @@ const ProfileScreen = ({
         {[
           {title: 'My Orders', nav: 'myOrders'},
           {title: 'My Favorite', nav: 'wishlist'},
-          {title: 'My Notification', nav: ''},
+          {title: 'My Notification', nav: 'alerts'},
           {title: 'Terms & Condition', nav: ''},
           {title: 'Help', nav: ''},
         ].map(({title, nav}, index) => (
