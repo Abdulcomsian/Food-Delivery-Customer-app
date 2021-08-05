@@ -1,13 +1,14 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import DatePicker from 'react-native-modal-datetime-picker';
 import {
-  TextInput,
   View,
+  Text,
+  Image,
+  TextInput,
   ViewStyle,
   StyleSheet,
   TouchableOpacity,
   KeyboardTypeOptions,
-  Text,
 } from 'react-native';
 import {Colors, TextFamily} from '../constants';
 import {getCustomData} from '../utils/libs';
@@ -133,7 +134,7 @@ const InputB = ({
   </View>
 );
 const InputC = ({
-  border = true,
+  icon = undefined,
   secureTextEntry = false,
   keyboardType = 'default',
   value = '',
@@ -142,8 +143,8 @@ const InputC = ({
   placeHolder = '',
   area = false,
 }: {
+  icon?: any;
   area?: boolean;
-  border?: boolean;
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
   value?: string;
@@ -151,20 +152,34 @@ const InputC = ({
   style?: ViewStyle;
   placeHolder?: string;
 }) => (
-  <TextInput
-    keyboardType={keyboardType}
-    returnKeyType={keyboardType === 'phone-pad' ? 'done' : 'default'}
-    secureTextEntry={secureTextEntry}
-    value={value}
-    numberOfLines={area ? 3 : 1}
-    onChangeText={setValue}
-    placeholder={placeHolder}
-    placeholderTextColor={Colors.Grey7}
+  <View
     style={[
-      Styles.inputView3,
+      Styles.inputView3A,
       {height: area ? Styles.inputView3.height * 3 : Styles.inputView3.height},
-    ]}
-  />
+    ]}>
+    {icon !== undefined && (
+      <Image source={icon} style={{width: 30, height: 30, marginLeft: 8}} />
+    )}
+    <TextInput
+      keyboardType={keyboardType}
+      returnKeyType={keyboardType === 'phone-pad' ? 'done' : 'default'}
+      secureTextEntry={secureTextEntry}
+      value={value}
+      numberOfLines={area ? 3 : 1}
+      onChangeText={setValue}
+      placeholder={placeHolder}
+      placeholderTextColor={Colors.Grey7}
+      style={[
+        Styles.inputView3,
+        {
+          marginBottom: 0,
+          height: area
+            ? Styles.inputView3.height * 3
+            : Styles.inputView3.height,
+        },
+      ]}
+    />
+  </View>
 );
 const Styles = StyleSheet.create({
   overlay: {
@@ -175,6 +190,7 @@ const Styles = StyleSheet.create({
     bottom: 0,
     zIndex: 5,
   },
+
   inputView: {
     borderRadius: 6,
     height: 44,
@@ -199,9 +215,17 @@ const Styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
     backgroundColor: Colors.Grey1,
-    width: '100%',
+    flex: 1,
     marginBottom: 10,
     fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
+  inputView3A: {
+    borderRadius: 8,
+    backgroundColor: Colors.Grey1,
+    width: '100%',
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   inputStyle2: {
     textAlignVertical: 'center',

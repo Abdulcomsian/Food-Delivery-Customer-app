@@ -32,6 +32,7 @@ import PhoneNumber from '../screens/phoneNumber';
 import MapScreen from '../screens/mapScreen';
 import NewAddressScreen from '../screens/newAddressScreen';
 import AllAddressScreen from '../screens/allAddressScreen';
+import StoreSearchScreen from '../screens/searchPickupStore';
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();
 
@@ -63,6 +64,22 @@ const Stack = () => {
               fontFamily: TextFamily.ROBOTO_BLACK,
             },
             headerStyle: getShadow(1),
+            headerTintColor: Colors.dark,
+          }}
+        />
+        <Screen
+          name={'storeSearch'}
+          component={StoreSearchScreen}
+          options={{
+            headerTitleAlign: 'center',
+            headerBackTitleVisible: false,
+            headerTitle: 'Search Pickup Store',
+            headerTitleStyle: {
+              fontSize: 18,
+              textAlign: 'center',
+              fontFamily: TextFamily.ROBOTO_BLACK,
+            },
+            headerStyle: {...getShadow(1)},
             headerTintColor: Colors.dark,
           }}
         />

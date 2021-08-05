@@ -13,7 +13,7 @@ const CartScreen = ({
   route: object;
 }) => {
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
-  let status = 'ontheWay';
+  let status = 'empty';
   return (
     <View style={styles.ScreenContain}>
       <Headers.HeaderB title={getStatus(status)} />

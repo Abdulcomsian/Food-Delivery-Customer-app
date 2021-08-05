@@ -24,12 +24,12 @@ const HomeScreen = ({
 }) => {
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
   const [locEModal, setLocEModal] = useState<boolean>(false);
-  useEffect(() => {
-    setLocEModal(true);
-  }, []);
+  // useEffect(() => {
+  //   setLocEModal(true);
+  // }, []);
   return (
     <Fragment>
-      {/* <Cards.LocationEnabler visible={locEModal} setVisible={setLocEModal} /> */}
+      <Cards.LocationEnabler visible={locEModal} setVisible={setLocEModal} />
       <View style={styles.ScreenContain}>
         <Headers.HeaderA />
         <Headers.SearchBar />

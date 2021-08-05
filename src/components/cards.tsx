@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {Fragment} from 'react';
 import {
   View,
   Image,
@@ -7,18 +8,26 @@ import {
   Modal,
   TouchableOpacity,
   ImageBackground,
+  Platform,
+  TextInput,
+  ScrollView,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Button from './buttons';
 import getShadow from '../utils/shadow';
+import {getPriceFormat, objectIsEmpty} from '../utils/libs';
 import {
-  navigationRef,
   navigate,
+  navigationRef,
   navigateWithParams,
 } from '../navigator/navigationHelper';
 import Actions from '../redux/actions';
+import Header from '../components/header';
 import {Colors, Images, TextFamily} from '../constants';
+import {useState} from 'react';
+import {useEffect} from 'react';
 const LocationEnabler = ({
   visible = false,
   setVisible = () => {},
@@ -150,7 +159,247 @@ const FoodCard2 = () => {
     </TouchableOpacity>
   );
 };
-export default {LocationEnabler, PasswordReset, FoodCard1, FoodCard2};
+const ChooseSubItem = ({
+  visiblity = false,
+  setVisiblity = () => {},
+  item = {},
+  cart = {},
+}: {
+  visiblity?: boolean;
+  setVisiblity?: Function;
+  item?: object;
+  cart?: object;
+}) => {
+  const {bottom} = useSafeAreaInsets();
+  const [Selected, setSelected] = useState(0);
+  const [qty, setQty] = useState(0);
+  const qtyManipulate = (isAdd = true) => {
+    isAdd ? setQty(qty + 1) : qty > 0 && setQty(qty - 1);
+  };
+  const initilize = () => {
+    setSelected(0);
+    setQty(0);
+  };
+  useEffect(() => {
+    visiblity && initilize();
+  }, [visiblity]);
+  return (
+    <Modal
+      //presentationStyle="fullScreen"
+      visible={visiblity}
+      onRequestClose={() => {
+        setVisiblity(false);
+        return true;
+      }}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: Colors.white,
+        }}>
+        <Header.HeaderB
+          title={'Choose Your Order'}
+          back={true}
+          onBackPress={() => {
+            setVisiblity(false);
+          }}
+        />
+        {!objectIsEmpty(item) && (
+          <Fragment>
+            <View style={{flex: 1, paddingHorizontal: 15}}>
+              <View
+                style={{
+                  flex: 1,
+                  ...getShadow(3),
+                  marginTop: 10,
+                  borderRadius: 8,
+                }}>
+                <View
+                  style={{
+                    width: '100%',
+                    height: 60,
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    backgroundColor: Colors.Grey1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingHorizontal: 15,
+                  }}>
+                  <Text
+                    style={{fontSize: 24, fontFamily: TextFamily.ROBOTO_BLACK}}>
+                    Chiken Pizza
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontFamily: TextFamily.ROBOTO_BOLD,
+                      color: Colors.red,
+                    }}>
+                    £. {getPriceFormat(18)}
+                  </Text>
+                </View>
+                <ScrollView
+                  style={{flex: 1}}
+                  contentContainerStyle={{
+                    paddingHorizontal: 10,
+                    width: '100%',
+                  }}>
+                  {[
+                    {name: 'small', price: 6},
+                    {name: 'medium', price: 9},
+                    {name: 'large', price: 12},
+                  ].map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => setSelected(index)}
+                        activeOpacity={0.85}
+                        key={'_item' + index}
+                        style={{
+                          width: '100%',
+                          height: 60,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          borderBottomWidth: 1,
+                          borderBottomColor: Colors.Grey2,
+                        }}>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Selector selected={index === Selected} />
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              flex: 1,
+                              fontSize: 16,
+                              fontFamily: TextFamily.ROBOTO_MEDIUM,
+                              textTransform: 'capitalize',
+                              marginLeft: 8,
+                            }}>
+                            {item.name}
+                          </Text>
+                        </View>
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontFamily: TextFamily.ROBOTO_MEDIUM,
+                            color: Colors.Grey6,
+                            marginLeft: 10,
+                          }}>
+                          £.{getPriceFormat(item.price)}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                  <TouchableOpacity
+                    onPress={() => {}}
+                    activeOpacity={0.85}
+                    style={{
+                      width: '100%',
+                      height: 60,
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      borderBottomWidth: 1,
+                      borderBottomColor: Colors.Grey2,
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontFamily: TextFamily.ROBOTO_REGULAR,
+                          color: Colors.red,
+                        }}>
+                        Add extra cheese +
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </ScrollView>
+              </View>
+              {/* <Text
+                style={{
+                  marginBottom: 14,
+                  ,
+                  fontSize: 16,
+                  fontFamily: TextFamily.ROBOTO_REGULAR,
+                }}>
+                Add Note
+              </Text> */}
+              <TextInput
+                placeholder={'Add Note'}
+                placeholderTextColor={Colors.Grey6}
+                style={{
+                  width: '100%',
+                  height: 30 * 5,
+                  borderRadius: 8,
+                  borderColor: Colors.dark,
+                  borderWidth: 1,
+                  padding: 10,
+                  marginTop: 24,
+                  marginBottom: 24,
+                }}
+                numberOfLines={5}
+              />
+            </View>
+            <View
+              style={[
+                {
+                  height: Platform.OS === 'android' ? 88 : bottom + 88,
+                  paddingBottom: bottom,
+                },
+                ChooseOrder.bottomPart,
+              ]}>
+              <View style={ChooseOrder.rightPart}>
+                <TouchableOpacity
+                  style={ChooseOrder.sqBtn}
+                  onPress={() => qtyManipulate(false)}>
+                  <Text style={ChooseOrder.sqBtnText}>-</Text>
+                </TouchableOpacity>
+                <Text style={ChooseOrder.count}>{qty}</Text>
+                <TouchableOpacity
+                  style={ChooseOrder.sqBtn}
+                  onPress={qtyManipulate}>
+                  <Text style={ChooseOrder.sqBtnText}>+</Text>
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity style={ChooseOrder.recBtn}>
+                <Text style={ChooseOrder.recBtnText}>Add to cart</Text>
+              </TouchableOpacity>
+            </View>
+          </Fragment>
+        )}
+      </View>
+    </Modal>
+  );
+};
+const Selector = ({selected = false}: {selected?: boolean}) => (
+  <View
+    style={{
+      height: 20,
+      width: 20,
+      borderRadius: 10,
+      borderWidth: 3,
+      borderColor: Colors.Grey3,
+      backgroundColor: selected ? Colors.red : Colors.white,
+    }}
+  />
+);
+export default {
+  LocationEnabler,
+  PasswordReset,
+  FoodCard1,
+  ChooseSubItem,
+  FoodCard2,
+};
 
 //-----------------------------------------------
 const cardStyles = StyleSheet.create({
@@ -458,5 +707,48 @@ const foodStyles = StyleSheet.create({
   rightHeart: {
     transform: [{rotate: '45deg'}],
     right: 5,
+  },
+});
+const ChooseOrder = StyleSheet.create({
+  count: {
+    color: Colors.dark,
+    fontSize: 34,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
+  sqBtn: {
+    width: 44,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.green,
+    borderRadius: 4,
+  },
+  sqBtnText: {fontSize: 27, color: Colors.white},
+  bottomPart: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    width: '100%',
+    ...getShadow(4),
+  },
+  recBtn: {
+    backgroundColor: Colors.red,
+    width: 142,
+    height: 53,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+  },
+  recBtnText: {
+    color: Colors.white,
+    fontFamily: TextFamily.ROBOTO_MEDIUM,
+    fontSize: 16,
+  },
+  rightPart: {
+    width: 154,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

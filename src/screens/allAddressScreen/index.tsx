@@ -1,12 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Fragment} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
-import {HeaderBackButton} from '@react-navigation/stack';
-import MapView, {Marker, PROVIDER_DEFAULT} from 'react-native-maps';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import getShadow from '../../utils/shadow';
-import {Buttons, Inputs} from '../../components';
-import {Colors, Images, TextFamily} from '../../constants';
 import {ScrollView} from 'react-native-gesture-handler';
+import {navigate} from '../../navigator/navigationHelper';
+import {Colors, Images, TextFamily} from '../../constants';
+import getShadow from '../../utils/shadow';
+import {Buttons} from '../../components';
 const AllAddressScreen = ({
   navigation,
   route,
@@ -76,7 +76,9 @@ const AllAddressScreen = ({
             backgroundColor: Colors.white,
           }}>
           <Text
-            onPress={() => {}}
+            onPress={() => {
+              navigate('newAddress');
+            }}
             style={{
               fontFamily: TextFamily.ROBOTO_REGULAR,
               fontSize: 16,
@@ -104,20 +106,13 @@ const AllAddressScreen = ({
 const Check = ({checked = false}: {checked?: boolean}) => {
   return (
     <View
-      style={{
-        position: 'absolute',
-        width: 45,
-        height: 45,
-        top: 25,
-        right: 10,
-        zIndex: 5,
-        borderRadius: 22,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: checked ? Colors.green : Colors.Grey1,
-        backgroundColor: checked ? Colors.white : Colors.Grey1,
-      }}>
+      style={[
+        styles.check,
+        {
+          borderColor: checked ? Colors.green : Colors.Grey1,
+          backgroundColor: checked ? Colors.white : Colors.Grey1,
+        },
+      ]}>
       <Image
         source={checked ? Images.ok2 : Images.ok}
         resizeMode={'contain'}
@@ -140,7 +135,18 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     alignItems: 'center',
   },
-
+  check: {
+    position: 'absolute',
+    width: 45,
+    height: 45,
+    top: 25,
+    right: 10,
+    zIndex: 5,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+  },
   screenCont: {
     flex: 1,
     backgroundColor: Colors.white,

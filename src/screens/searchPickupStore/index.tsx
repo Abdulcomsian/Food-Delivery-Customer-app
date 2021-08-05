@@ -2,27 +2,25 @@ import React, {Fragment} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Buttons, Inputs} from '../../components';
-import {Colors} from '../../constants';
-const NewAddressScreen = ({
-  navigation,
+import {Colors, Images} from '../../constants';
+const PickUpStoreSearch = ({
   route,
+  navigation,
 }: {
-  navigation: object;
   route: object;
+  navigation: object;
 }) => {
   const {top, bottom} = useSafeAreaInsets();
   return (
     <Fragment>
-      <View style={styles.screenCont}>
+      <View style={Styles.cont}>
+        <Inputs.InputC placeHolder="Search" icon={Images.search} />
         <Inputs.InputC placeHolder="City" />
-        <Inputs.InputC placeHolder="Area" />
-        <Inputs.InputC placeHolder="Sub Area" />
-        <Inputs.InputC placeHolder="PostCode" />
-        <Inputs.InputC placeHolder="Address" area={true} />
+        <Inputs.InputC placeHolder="Store" />
       </View>
       <Buttons.ButtonA
         title="Next"
-        onPress={() => navigation.navigate('allAddress')}
+        onPress={() => navigation.navigate('home')}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
           backgroundColor: Colors.red,
@@ -35,23 +33,12 @@ const NewAddressScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
-  back: {
-    height: 45,
-    position: 'absolute',
-    top: 15,
-    left: 5,
-    zIndex: 5,
-    borderRadius: 23,
-    alignItems: 'center',
-  },
-
-  screenCont: {
+const Styles = StyleSheet.create({
+  cont: {
     flex: 1,
     backgroundColor: Colors.white,
     paddingTop: 20,
     paddingHorizontal: 15,
   },
 });
-
-export default NewAddressScreen;
+export default PickUpStoreSearch;

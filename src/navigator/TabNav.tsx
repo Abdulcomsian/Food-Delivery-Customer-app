@@ -61,8 +61,8 @@ const TabBar = ({
       ...ORDER,
     }),
   );
-  const focusedOptions = descriptors[state.routes[state.index].key].options;
-  if (focusedOptions.tabBarVisible === false) {
+  const {tabBarVisible} = descriptors[state.routes[state.index].key].options;
+  if (tabBarVisible === false) {
     return null;
   }
   const cartArr = Object.entries(cart);
@@ -81,7 +81,7 @@ const TabBar = ({
 
           if (!isFocused && !event.defaultPrevented) {
             objectIsEmpty(cart)
-              ? navigation.navigate('orderServing') //phoneVerification') //phoneNumber') //navigation.navigate('cart')
+              ? navigation.navigate('cart') //phoneVerification') //phoneNumber') //navigation.navigate('orderServing')
               : navigate('cartFilled');
           }
         }}

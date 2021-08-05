@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,8 @@ import {
   MenuTrigger,
   renderers,
 } from 'react-native-popup-menu';
+import {HeaderBackButton} from '@react-navigation/stack';
+
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Colors, Images, TextFamily} from '../constants';
@@ -41,164 +43,191 @@ const HeaderA = ({
   const {loggedIn} = useSelector(
     ({USER}: {USER: InitialUserInterface}) => USER,
   );
-  return (
-    <View
-      style={[HeaderAStyle.headerCont, {height: 56 + top, paddingTop: top}]}>
-      <View style={HeaderAStyle.headerSubCont}>
-        <View style={HeaderAStyle.LeftCont}>
-          <Menu
-            renderer={renderers.Popover}
-            rendererProps={{preferredPlacement: 'bottom'}}>
-            <MenuTrigger>
-              <Text style={HeaderAStyle.smallText}>Deliver to</Text>
-              <View style={HeaderAStyle.rowify}>
-                <Text style={HeaderAStyle.normalText}>Selected Location</Text>
-                <Image source={Images.dropDown} style={HeaderAStyle.dropDown} />
-              </View>
-            </MenuTrigger>
-            <MenuOptions
-              optionsContainerStyle={{
-                height: 120,
-                borderBottomLeftRadius: 8,
-                borderBottomRightRadius: 8,
-              }}>
-              <MenuOption
-                onSelect={() => navigate('map')}
-                style={{width: wp(100) - 15}}
-                customStyles={{
-                  optionWrapper: {width: '100%', height: 58},
-                }}>
-                <View
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    paddingLeft: 15,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Image
-                    source={Images.aim}
-                    style={{width: 35, height: 35, marginRight: 5}}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: TextFamily.ROBOTO_REGULAR,
-                      fontSize: 16,
-                      color: Colors.dark,
-                    }}>
-                    Current Location
-                  </Text>
-                </View>
-              </MenuOption>
-              <View
-                style={{
-                  height: 1,
-                  borderWidth: 0.5,
-                  borderColor: Colors.Grey5,
-                  marginVertical: 1,
-                }}
-              />
-              <MenuOption
-                onSelect={() => navigate(`newAddress`)}
-                customStyles={{
-                  optionWrapper: {width: '100%', height: 58},
-                }}>
-                <View
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    paddingLeft: 20,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}>
-                  <Text
-                    style={{
-                      fontFamily: TextFamily.ROBOTO_REGULAR,
-                      fontSize: 16,
-                      color: Colors.red,
-                      textDecorationLine: 'underline',
-                    }}>
-                    Add New Address +
-                  </Text>
-                </View>
-              </MenuOption>
-            </MenuOptions>
-          </Menu>
-        </View>
-        <View style={HeaderAStyle.rightLeftCont}>
-          {renderRight && (
-            <Fragment>
-              {renderChild1 ? (
-                <TouchableOpacity
-                  style={HeaderAStyle.nBtn}
-                  activeOpacity={activeOpacity}>
-                  <Badge count={7} />
-                  <Image
-                    source={Images.notification}
-                    style={HeaderAStyle.notification}
-                  />
-                </TouchableOpacity>
-              ) : (
-                <View style={HeaderAStyle.nBtn} />
-              )}
-              <TouchableOpacity
-                style={HeaderAStyle.Btn}
-                onPress={() => {
-                  loggedIn
-                    ? navigate('profile')
-                    : Actions.toggleBottomLogin()(dispatch);
-                }}
-                activeOpacity={activeOpacity}>
-                <Image source={Images.avatar} style={HeaderAStyle.avatar} />
-              </TouchableOpacity>
-            </Fragment>
-          )}
-        </View>
-      </View>
-    </View>
-  );
-};
-const HeaderA2 = ({navigation}: {navigation?: any}) => {
-  const {top} = useSafeAreaInsets();
-  const dispatch = useDispatch();
-  const {loggedIn} = useSelector(
-    ({USER}: {USER: InitialUserInterface}) => USER,
-  );
+  const [deliverType, setDeliverType] = useState<string>('');
   return (
     <View
       style={[
         HeaderAStyle.headerCont,
-        {height: 56 + top, paddingTop: top, paddingRight: 15},
+        {
+          height: 56 + top,
+          paddingTop: top,
+          paddingRight: deliverType === '' ? 15 : 12,
+        },
       ]}>
       <View style={HeaderAStyle.headerSubCont}>
-        <TouchableOpacity
-          activeOpacity={activeOpacity}
-          onPress={() => {}}
-          style={[
-            SearchBarStyle.tab,
-            {
-              backgroundColor: Colors.green,
-              borderTopLeftRadius: 8,
-              borderBottomLeftRadius: 8,
-            },
-          ]}>
-          <Image source={Images.bic} style={SearchBarStyle.tabIcon} />
-          <Text style={SearchBarStyle.tabText}>Delivery</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={activeOpacity}
-          onPress={() => {}}
-          style={[
-            SearchBarStyle.tab,
-            {
-              backgroundColor: Colors.red,
-              borderTopRightRadius: 8,
-              borderBottomRightRadius: 8,
-            },
-          ]}>
-          <Image source={Images.house} style={SearchBarStyle.tabIcon} />
-          <Text style={SearchBarStyle.tabText}>Pickup</Text>
-        </TouchableOpacity>
+        {deliverType === '' ? (
+          <Fragment>
+            <TouchableOpacity
+              activeOpacity={activeOpacity}
+              onPress={() => {
+                setDeliverType('deliver');
+              }}
+              style={[
+                SearchBarStyle.tab,
+                {
+                  backgroundColor: Colors.green,
+                  borderTopLeftRadius: 8,
+                  borderBottomLeftRadius: 8,
+                },
+              ]}>
+              <Image source={Images.bic} style={SearchBarStyle.tabIcon} />
+              <Text style={SearchBarStyle.tabText}>Delivery</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={activeOpacity}
+              onPress={() => {
+                setDeliverType('pickup');
+              }}
+              style={[
+                SearchBarStyle.tab,
+                {
+                  backgroundColor: Colors.red,
+                  borderTopRightRadius: 8,
+                  borderBottomRightRadius: 8,
+                },
+              ]}>
+              <Image source={Images.house} style={SearchBarStyle.tabIcon} />
+              <Text style={SearchBarStyle.tabText}>Pickup</Text>
+            </TouchableOpacity>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <View style={HeaderAStyle.LeftCont}>
+              {deliverType === 'deliver' ? (
+                <Menu
+                  renderer={renderers.Popover}
+                  rendererProps={{preferredPlacement: 'bottom'}}>
+                  <MenuTrigger>
+                    <Text style={HeaderAStyle.smallText}>Deliver to</Text>
+                    <View style={HeaderAStyle.rowify}>
+                      <Text style={HeaderAStyle.normalText}>
+                        Selected Location
+                      </Text>
+                      <Image
+                        source={Images.dropDown}
+                        style={HeaderAStyle.dropDown}
+                      />
+                    </View>
+                  </MenuTrigger>
+                  <MenuOptions
+                    optionsContainerStyle={{
+                      height: 120,
+                      borderBottomLeftRadius: 8,
+                      borderBottomRightRadius: 8,
+                    }}>
+                    <MenuOption
+                      onSelect={() => navigate('map')}
+                      style={{width: wp(100) - 15}}
+                      customStyles={{
+                        optionWrapper: {width: '100%', height: 58},
+                      }}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                          paddingLeft: 15,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <Image
+                          source={Images.aim}
+                          style={{width: 35, height: 35, marginRight: 5}}
+                        />
+                        <Text
+                          style={{
+                            fontFamily: TextFamily.ROBOTO_REGULAR,
+                            fontSize: 16,
+                            color: Colors.dark,
+                          }}>
+                          Current Location
+                        </Text>
+                      </View>
+                    </MenuOption>
+                    <View
+                      style={{
+                        height: 1,
+                        borderWidth: 0.5,
+                        borderColor: Colors.Grey5,
+                        marginVertical: 1,
+                      }}
+                    />
+                    <MenuOption
+                      onSelect={() => navigate(`newAddress`)}
+                      customStyles={{
+                        optionWrapper: {width: '100%', height: 58},
+                      }}>
+                      <View
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                          paddingLeft: 20,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            fontFamily: TextFamily.ROBOTO_REGULAR,
+                            fontSize: 16,
+                            color: Colors.red,
+                            textDecorationLine: 'underline',
+                          }}>
+                          Add New Address +
+                        </Text>
+                      </View>
+                    </MenuOption>
+                  </MenuOptions>
+                </Menu>
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.85}
+                  onPress={() => navigate('storeSearch')}>
+                  <Text style={HeaderAStyle.smallText}>Pickup</Text>
+                  <View style={HeaderAStyle.rowify}>
+                    <Text style={HeaderAStyle.normalText}>
+                      Select Pickup Store
+                    </Text>
+                    <Image
+                      source={Images.dropDown}
+                      style={[
+                        HeaderAStyle.dropDown,
+                        {transform: [{rotate: '-90deg'}]},
+                      ]}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+            </View>
+            <View style={HeaderAStyle.rightLeftCont}>
+              {renderRight && (
+                <Fragment>
+                  {renderChild1 ? (
+                    <TouchableOpacity
+                      style={HeaderAStyle.nBtn}
+                      activeOpacity={activeOpacity}>
+                      <Badge count={7} />
+                      <Image
+                        source={Images.notification}
+                        style={HeaderAStyle.notification}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <View style={HeaderAStyle.nBtn} />
+                  )}
+                  <TouchableOpacity
+                    style={HeaderAStyle.Btn}
+                    onPress={() => {
+                      loggedIn
+                        ? navigate('profile')
+                        : Actions.toggleBottomLogin()(dispatch);
+                    }}
+                    activeOpacity={activeOpacity}>
+                    <Image source={Images.avatar} style={HeaderAStyle.avatar} />
+                  </TouchableOpacity>
+                </Fragment>
+              )}
+            </View>
+          </Fragment>
+        )}
       </View>
     </View>
   );
@@ -206,9 +235,13 @@ const HeaderA2 = ({navigation}: {navigation?: any}) => {
 const HeaderB = ({
   navigation,
   title = '',
+  back = false,
+  onBackPress = () => {},
 }: {
   navigation?: any;
   title?: string;
+  back?: boolean;
+  onBackPress?: Function;
 }) => {
   const {top} = useSafeAreaInsets();
   return (
@@ -217,8 +250,20 @@ const HeaderB = ({
         HeaderAStyle.headerCont,
         {height: 56 + top, paddingTop: top, ...getShadow(1)},
       ]}>
-      <View style={[HeaderAStyle.headerSubCont, {justifyContent: 'center'}]}>
+      <View
+        style={[
+          HeaderAStyle.headerSubCont,
+          {justifyContent: back ? 'space-between' : 'center'},
+        ]}>
+        {back && (
+          <HeaderBackButton
+            tintColor={Colors.dark}
+            labelVisible={false}
+            onPress={onBackPress}
+          />
+        )}
         <Text style={[HeaderAStyle.title, {fontSize: 18}]}>{title}</Text>
+        {back && <View style={{width: 35, height: 1}} />}
       </View>
     </View>
   );
@@ -349,4 +394,4 @@ const SearchBarStyle = StyleSheet.create({
     fontFamily: TextFamily.ROBOTO_MEDIUM,
   },
 });
-export default {HeaderA, HeaderA2, SearchBar, HeaderB};
+export default {HeaderA, SearchBar, HeaderB};
