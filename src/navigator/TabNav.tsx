@@ -22,6 +22,7 @@ import Wishlist from '../screens/favourite';
 import Cart from '../screens/cartScreen';
 import Notification from '../screens/home';
 import Account from '../screens/home';
+import {Platform} from 'react-native';
 //---------------------------------------------------------------------
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -93,7 +94,7 @@ const TabBar = ({
         }}
         style={{
           position: 'absolute',
-          bottom: bottom + 32,
+          bottom: Platform.OS === 'android' ? 32 : bottom + 32,
           right: wp(50) - 32,
           width: 64,
           height: 64,
@@ -115,8 +116,8 @@ const TabBar = ({
       <View
         style={{
           flexDirection: 'row',
-          height: 63 + bottom,
-          paddingBottom: bottom,
+          height: Platform.OS === 'android' ? 63 : 63 + bottom,
+          paddingBottom: Platform.OS === 'android' ? 0 : bottom,
           width: wp(100),
           alignSelf: 'center',
           position: 'absolute',

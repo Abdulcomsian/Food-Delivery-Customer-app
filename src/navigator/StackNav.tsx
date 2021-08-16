@@ -278,8 +278,12 @@ const Stack = () => {
           options={{headerShown: false}}
         />
       </Navigator>
-      <BottomSheet.BottomSheetSheetA status={filterBottomSheet} />
-      <BottomSheet.BottomSheetLogin status={loginBottomSheet} />
+      {filterBottomSheet && (
+        <BottomSheet.BottomSheetSheetA status={filterBottomSheet} />
+      )}
+      {loginBottomSheet && (
+        <BottomSheet.BottomSheetLogin status={loginBottomSheet} />
+      )}
     </Fragment>
   );
 };

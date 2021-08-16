@@ -15,6 +15,7 @@ import getShadow from '../../utils/shadow';
 import {Cards, Headers, BottomSheet} from '../../components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
+import {Platform} from 'react-native';
 const HomeScreen = ({
   navigation,
   route,
@@ -397,6 +398,7 @@ const styles = StyleSheet.create({
   FoodTitle: {
     position: 'absolute',
     top: 100,
+    zIndex: 3,
     alignSelf: 'center',
     fontFamily: TextFamily.ROBOTO_REGULAR,
     textAlign: 'center',
@@ -417,6 +419,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     top: 0,
+    zIndex: 3,
   },
   TrapezoidStyle: {
     width: 105,
@@ -427,7 +430,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderRightColor: Colors.transparent,
     borderLeftColor: Colors.transparent,
-    ...getShadow(4, Colors.transparent),
+    ...getShadow(Platform.OS === 'android' ? 0 : 4, Colors.transparent),
   },
   heartx: {
     width: 50,
