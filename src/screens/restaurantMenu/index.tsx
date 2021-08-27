@@ -14,12 +14,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useDispatch, useSelector} from 'react-redux';
-import {Cards} from '../../components';
-import {OrdersStatesInterface} from '../../constants/interfaces';
-import {Colors, TextFamily, Images} from '../../constants';
-import {getPriceFormat} from '../../utils/libs';
-import getShadow from '../../utils/shadow';
-import ACTIONS from '../../redux/actions';
+import {Cards} from '@components';
+import {OrdersStatesInterface} from '@constants/interfaces';
+import {Colors, TextFamily, Images} from '@constants';
+import {getPriceFormat} from '@utils/libs';
+import getShadow from '@utils/shadow';
+import ACTIONS from '@redux/actions';
 const Restaurant = ({
   navigation,
   route,

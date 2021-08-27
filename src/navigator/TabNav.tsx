@@ -1,28 +1,27 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import React, {Fragment} from 'react';
-import {View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image, Platform} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
-import getShadow from '../utils/shadow';
-import {objectIsEmpty} from '../utils/libs';
-import Actions from '../redux/actions';
-import {Colors, Images} from '../constants';
-import {Badge} from '../components';
+import getShadow from '@utils/shadow';
+import {objectIsEmpty} from '@utils/libs';
+import Actions from '@redux/actions';
+import {Colors, Images} from '@constants';
+import {Badge} from '@components';
 import {
   OrdersStatesInterface,
   InitialUserInterface,
-} from '../constants/interfaces';
-import {navigate} from '../navigator/navigationHelper';
+} from '@constants/interfaces';
+import {navigate} from '@navigatorHelper';
 //---------------------------------------------------------------------
-import Home from '../screens/home';
-import Wishlist from '../screens/favourite';
-import Cart from '../screens/cartScreen';
-import Notification from '../screens/home';
-import Account from '../screens/home';
-import {Platform} from 'react-native';
+import Home from '@screens/home';
+import Wishlist from '@screens/favourite';
+import Cart from '@screens/cartScreen';
+import Notification from '@screens/home';
+import Account from '@screens/home';
 //---------------------------------------------------------------------
 const {Navigator, Screen} = createBottomTabNavigator();
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import {View, Modal, StyleSheet, Image, Text} from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-import {Colors, Images, TextFamily} from '../constants';
-import {navigationRef} from '../navigator/navigationHelper';
+import {Colors, Images, TextFamily} from '@constants';
+import {navigationRef} from '@navigatorHelper';
 import {StackActions} from '@react-navigation/native';
-import {CommonActions} from '@react-navigation/native';
 import Buttons from './buttons';
 const OrderSuccessFullyReceived = ({
   visible = false,

@@ -3,10 +3,10 @@ import React, {Fragment} from 'react';
 import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {ScrollView} from 'react-native-gesture-handler';
-import {navigate} from '../../navigator/navigationHelper';
-import {Colors, Images, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {Buttons} from '../../components';
+import {navigate} from '@navigatorHelper';
+import {Colors, Images, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
+import {Buttons} from '@components';
 const AllAddressScreen = ({
   navigation,
   route,

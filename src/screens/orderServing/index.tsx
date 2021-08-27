@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Colors, Images, TextFamily} from '../../constants';
+import {Colors, Images, TextFamily} from '@constants';
 const OrderServingScreen = ({
   navigation,
   route,

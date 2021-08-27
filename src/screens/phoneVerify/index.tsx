@@ -9,7 +9,7 @@ import {
   heightPercentageToDP as HP,
 } from 'react-native-responsive-screen';
 import {useDispatch} from 'react-redux';
-import {Colors} from '../../constants';
+import {Colors} from '@constants';
 import {
   CodeField,
   Cursor,

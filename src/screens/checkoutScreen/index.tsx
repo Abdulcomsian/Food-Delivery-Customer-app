@@ -9,13 +9,13 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import {Colors, Images, TextFamily} from '../../constants';
-import {Modals} from '../../components';
+import {Colors, Images, TextFamily} from '@constants';
+import {Modals} from '@components';
 import {useSelector} from 'react-redux';
 import {
   OrdersStatesInterface,
   InitialUserInterface,
-} from '../../constants/interfaces';
+} from '@constants/interfaces';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 const CheckOutScreen = ({
   navigation,

@@ -6,8 +6,8 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import PhoneInput from 'react-native-phone-number-input';
 import {useDispatch} from 'react-redux';
-import {Colors, TextFamily} from '../../constants';
-import {Buttons} from '../../components';
+import {Colors, TextFamily} from '@constants';
+import {Buttons} from '@components';
 const PhoneScreen = ({navigation, route}: {navigation: any; route: any}) => {
   const dispatch = useDispatch();
   const {top, bottom} = useSafeAreaInsets();

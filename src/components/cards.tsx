@@ -1,5 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {Fragment} from 'react';
+import {useEffect} from 'react';
+import React, {Fragment, useState} from 'react';
 import {
   View,
   Image,
@@ -16,18 +17,13 @@ import {useDispatch} from 'react-redux';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import Button from './buttons';
-import getShadow from '../utils/shadow';
-import {getPriceFormat, objectIsEmpty} from '../utils/libs';
-import {
-  navigate,
-  navigationRef,
-  navigateWithParams,
-} from '../navigator/navigationHelper';
-import Actions from '../redux/actions';
-import Header from '../components/header';
-import {Colors, Images, TextFamily} from '../constants';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import getShadow from '@utils/shadow';
+import {getPriceFormat, objectIsEmpty} from '@utils/libs';
+import {navigate, navigationRef, navigateWithParams} from '@navigatorHelper';
+import Actions from '@redux/actions';
+import {Headers} from '@components';
+import {Colors, Images, TextFamily} from '@constants';
+
 const LocationEnabler = ({
   visible = false,
   setVisible = () => {},
@@ -196,7 +192,7 @@ const ChooseSubItem = ({
           flex: 1,
           backgroundColor: Colors.white,
         }}>
-        <Header.HeaderB
+        <Headers.HeaderB
           title={'Choose Your Order'}
           back={true}
           onBackPress={() => {

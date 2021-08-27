@@ -14,10 +14,11 @@ import {
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
-import {Buttons} from '../../components';
-import {Colors, TextFamily, Images} from '../../constants';
-import {getPriceFormat} from '../../utils/libs';
-import getShadow from '../../utils/shadow';
+import {Buttons} from '@components';
+import {Colors, TextFamily, Images} from '@constants';
+import {order} from '@constants/interfaces';
+import {getPriceFormat} from '@utils/libs';
+import getShadow from '@utils/shadow';
 const OrderDetail = ({
   navigation,
   route,
@@ -26,7 +27,7 @@ const OrderDetail = ({
   route: object;
 }) => {
   const dispatch = useDispatch();
-
+  const {orderItem}: {orderItem: order} = route.params;
   useEffect(() => {
     StatusBar.setBarStyle('light-content');
     return () => {
@@ -34,12 +35,14 @@ const OrderDetail = ({
     };
   }, []);
   const {top, bottom} = useSafeAreaInsets();
-
+  const subTotal = orderItem.items.reduce((pre, {qty, price: prize}) => {
+    return prize * qty + pre;
+  }, 0);
   return (
     <Fragment>
       <View style={styles.screenCont}>
         <ImageBackground
-          source={Images.food}
+          source={{uri: orderItem.Avatar}}
           style={{width: WP(100), height: 340}}>
           <View style={styles.overlay} />
           <View style={{paddingTop: top}}>
@@ -52,13 +55,13 @@ const OrderDetail = ({
               </TouchableOpacity>
             </View>
             <View style={styles.imageBottomView}>
-              <Text
-                style={styles.imageMainTitle}
-                numberOfLines={2}>{`Pasta's Dinner`}</Text>
+              <Text style={styles.imageMainTitle} numberOfLines={2}>
+                {orderItem.foodProvider}
+              </Text>
               <View style={styles.rowify2}>
                 <Image source={Images.location} style={styles.location} />
                 <Text style={styles.address} numberOfLines={1}>
-                  Murre Road, Rawalpindi
+                  {orderItem.foodProviderAddress}
                 </Text>
               </View>
               <View
@@ -72,8 +75,11 @@ const OrderDetail = ({
                 ]}>
                 <View style={[styles.rowify2, {paddingLeft: 0}]}>
                   <Image source={Images.star} style={styles.star} />
-                  <Text style={styles.rating}>4.5</Text>
-                  <Text style={styles.rater}>{`(${787} Ratings)`}</Text>
+                  <Text style={styles.rating}>{orderItem.reviewStars}</Text>
+                  <Text
+                    style={
+                      styles.rater
+                    }>{`(${orderItem.ratings} Ratings)`}</Text>
                 </View>
               </View>
             </View>
@@ -110,7 +116,7 @@ const OrderDetail = ({
                 color: Colors.dark,
                 marginBottom: 8,
               }}>
-              Order number:#123rtyc4
+              Order number:#{orderItem.orderNumber}
             </Text>
             <Text
               style={{
@@ -118,7 +124,7 @@ const OrderDetail = ({
                 fontFamily: TextFamily.ROBOTO_REGULAR,
                 color: Colors.dark,
               }}>
-              Deliver Address : 72 Cecil Street,NORTH
+              {orderItem.Address}
             </Text>
           </View>
           <View
@@ -129,32 +135,35 @@ const OrderDetail = ({
               borderRadius: 8,
               ...getShadow(4),
             }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-                alignItems: 'center',
-              }}>
-              <Text
+            {orderItem.items.map((item, index) => (
+              <View
+                key={'_' + item.name + '_' + index}
                 style={{
-                  fontSize: 18,
-                  fontFamily: TextFamily.ROBOTO_REGULAR,
-                  marginBottom: 10,
-                  color: Colors.dark,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  alignItems: 'center',
                 }}>
-                2 x Large Pizza
-              </Text>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: TextFamily.ROBOTO_REGULAR,
-                  color: Colors.dark,
-                  marginBottom: 8,
-                }}>
-                $. {getPriceFormat(18)}
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: TextFamily.ROBOTO_REGULAR,
+                    marginBottom: 10,
+                    color: Colors.dark,
+                  }}>
+                  {item.qty} x {item.name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: TextFamily.ROBOTO_REGULAR,
+                    color: Colors.dark,
+                    marginBottom: 8,
+                  }}>
+                  $. {getPriceFormat(item.price)}
+                </Text>
+              </View>
+            ))}
 
             <View
               style={{
@@ -183,7 +192,7 @@ const OrderDetail = ({
                   color: Colors.dark,
                   marginBottom: 8,
                 }}>
-                $. {getPriceFormat(18)}
+                $. {getPriceFormat(subTotal)}
               </Text>
             </View>
             <View
@@ -209,7 +218,7 @@ const OrderDetail = ({
                   color: Colors.dark,
                   marginBottom: 8,
                 }}>
-                $. {getPriceFormat(18)}
+                $. {getPriceFormat(orderItem.deliveryCharges)}
               </Text>
             </View>
             <View
@@ -239,7 +248,7 @@ const OrderDetail = ({
                   color: Colors.dark,
                   marginBottom: 8,
                 }}>
-                $. {getPriceFormat(18)}
+                $. {getPriceFormat(subTotal + orderItem.deliveryCharges)}
               </Text>
             </View>
           </View>

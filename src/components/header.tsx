@@ -19,13 +19,13 @@ import {HeaderBackButton} from '@react-navigation/stack';
 
 import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Colors, Images, TextFamily} from '../constants';
+import {Colors, Images, TextFamily} from '@constants';
 import Badge from './badge';
-import {navigate} from '../navigator/navigationHelper';
+import {navigate} from '@navigatorHelper';
 import {useDispatch, useSelector} from 'react-redux';
-import Actions from '../redux/actions';
-import getShadow from '../utils/shadow';
-import {InitialUserInterface} from '../constants/interfaces';
+import Actions from '@redux/actions';
+import getShadow from '@utils/shadow';
+import {InitialUserInterface} from '@constants/interfaces';
 const activeOpacity = 0.85;
 const HeaderA = ({
   navigation,

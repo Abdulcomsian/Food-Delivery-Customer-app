@@ -12,10 +12,10 @@ import {
 import {useSelector} from 'react-redux';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Images, Colors, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {InitialUserInterface} from '../../constants/interfaces';
-import {navigate} from '../../navigator/navigationHelper';
+import {Images, Colors, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
+import {InitialUserInterface} from '@constants/interfaces';
+import {navigate} from '@navigatorHelper';
 const ProfileScreen = ({
   navigation,
   route,

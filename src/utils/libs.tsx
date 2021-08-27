@@ -137,6 +137,35 @@ const getMonth = (monthId: number) => {
   }
   return mon;
 };
+const monthNames = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+const monthShortNames = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
+const weekDays = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
 const getPriceFormat = (price: string | number) => {
   const priceX = parseInt(price);
   return priceX.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
@@ -149,6 +178,14 @@ const objectIsEmpty = (obj: object): Boolean => {
   }
   return true;
 };
+const getFormattedDate = (dateToBeFormated: string, short: boolean = false) => {
+  const [day, month, year] = dateToBeFormated.split('-');
+  const mmonth = parseInt(month) - 1;
+  const thisDay = new Date(parseInt(year), mmonth, parseInt(day));
+  return short
+    ? `${day} ${monthShortNames[mmonth]}, ${parseInt(year) % 100}`
+    : `${weekDays[thisDay.getDay()]}, ${day} ${monthNames[mmonth]}, ${year}`;
+};
 export {
   objectIsEmpty,
   getCustomData,
@@ -156,4 +193,5 @@ export {
   getTextSizeStyle,
   devLogger,
   getPriceFormat,
+  getFormattedDate,
 };

@@ -3,8 +3,8 @@ import React from 'react';
 import {View, StyleSheet, Image, Text, ScrollView} from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Headers} from '../../components';
-import {Colors, Images, TextFamily} from '../../constants';
+import {Headers} from '@components';
+import {Colors, Images, TextFamily} from '@constants';
 const CartScreen = ({
   navigation,
   route,

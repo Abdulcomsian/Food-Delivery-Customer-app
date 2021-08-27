@@ -1,7 +1,8 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {Fragment, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import {Colors, TextFamily} from '../../constants';
-import {Inputs, Buttons, Cards} from '../../components';
+import {Colors, TextFamily} from '@constants';
+import {Inputs, Buttons, Cards} from '@components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 
 const ForgotPass = ({navigation}: {navigation: object}) => {

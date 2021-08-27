@@ -9,11 +9,11 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import {Colors, Images, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {getPriceFormat} from '../../utils/libs';
+import {Colors, Images, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
+import {getPriceFormat} from '@utils/libs';
 import Dummy from './dummy';
-import {Cards, Headers, BottomSheet} from '../../components';
+import {Cards, Headers, BottomSheet} from '@components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 const FavoriteScreen = ({

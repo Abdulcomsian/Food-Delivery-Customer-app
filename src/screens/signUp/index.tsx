@@ -1,7 +1,7 @@
 import React, {Fragment, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-import {Colors, TextFamily} from '../../constants';
-import {Inputs, Buttons, Cards} from '../../components';
+import {Colors, TextFamily} from '@constants';
+import {Inputs, Buttons, Cards} from '@components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 const SignUpScreen = ({navigation}: {navigation: object}) => {
   const [date, setDate] = useState<Date | String>('');

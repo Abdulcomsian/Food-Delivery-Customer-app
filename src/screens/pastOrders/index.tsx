@@ -1,100 +1,106 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
+  ActivityIndicator,
   TouchableOpacity,
-  ScrollView,
-  Platform,
+  StyleSheet,
   Pressable,
+  Platform,
+  FlatList,
+  Image,
+  View,
+  Text,
 } from 'react-native';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Images, Colors, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {navigateWithParams} from '../../navigator/navigationHelper';
-import {getPriceFormat} from '../../utils/libs';
-import {InitialUserInterface} from '../../constants/interfaces';
+import {Images, Colors, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
+import {navigateWithParams} from '@navigatorHelper';
+import {getPriceFormat, getFormattedDate} from '@utils/libs';
+import APIs from '@utils/APIs';
+import {InitialUserInterface, order} from '@constants/interfaces';
 import {useSelector} from 'react-redux';
-const PastOrdersScreen = ({
-  navigation,
-  route,
-}: {
-  navigation: object;
-  route: object;
-}) => {
+const PastOrdersScreen = () => {
   const {loggedIn, detail} = useSelector(
     ({USER}: {USER: InitialUserInterface}) => USER,
   );
-  const {top, bottom}: EdgeInsets = useSafeAreaInsets();
+  const [orders, setOrders] = useState<Array<order>>([]);
+  const [page, setPage] = useState<number>(1);
+  const [isMore, setIsMore] = useState<boolean>(true);
+  const [fetching, setFetching] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const {bottom}: EdgeInsets = useSafeAreaInsets();
+
+  const FirstTimeLoad = (refrshing: boolean = false) => {
+    refrshing && (setFetching(true), setRefreshing(true));
+    APIs.getOrderList({uid: 1})
+      .then(r => {
+        if (Array.isArray(r)) {
+          setOrders(r);
+          setIsMore(r.length === 20);
+          setPage(2);
+        } else if (refrshing) {
+          setIsMore(false);
+          setPage(1);
+        }
+      })
+      .finally(() => {
+        setFetching(false);
+        refrshing && setRefreshing(false);
+      });
+  };
+  const appendMore = () => {
+    if (isMore && !fetching) {
+      setFetching(true);
+      APIs.getOrderList({uid: 1, page})
+        .then(r => {
+          if (Array.isArray(r)) {
+            r.length > 0 && setOrders([...orders, ...r]);
+            setIsMore(r.length === 20);
+            setPage(page + 1);
+          }
+        })
+        .finally(() => {
+          setFetching(false);
+        });
+    }
+  };
+  useEffect(FirstTimeLoad, []);
   return (
-    <ScrollView
+    <FlatList
       style={styles.cont}
       contentContainerStyle={{
         width: '100%',
         paddingHorizontal: 15,
         paddingTop: 10,
         paddingBottom: Platform.OS === 'android' ? 10 : bottom + 10,
-      }}>
-      {[
-        {
-          title: 'Pizza Hut',
-          price: 18,
-          des: '2 Large Pizza',
-          time: '23-12-2019 23:33',
-        },
-        {
-          title: 'Pizza Hut',
-          price: 18,
-          des: '2 Large Pizza',
-          time: '23-12-2019 23:33',
-        },
-        {
-          title: 'Pizza Hut',
-          price: 18,
-          des: '2 Large Pizza',
-          time: '23-12-2019 23:33',
-        },
-        {
-          title: 'Pizza Hut',
-          price: 18,
-          des: '2 Large Pizza',
-          time: '23-12-2019 23:33',
-        },
-        {
-          title: 'Pizza Hut',
-
-          price: 18,
-          des: '2 Large Pizza',
-          time: '23-12-2019 23:33',
-        },
-      ].map(({title, des, time, price}, index) => (
-        <OrderBtn
-          key={'_Btn' + index}
-          title={title}
-          des={des}
-          time={time}
-          price={price}
-        />
-      ))}
-    </ScrollView>
+      }}
+      refreshing={refreshing}
+      onEndReachedThreshold={0.7}
+      showsVerticalScrollIndicator={false}
+      keyExtractor={(item: order) => '_Order' + item.id + item.orderNumber}
+      data={orders}
+      renderItem={({item}) => {
+        return <OrderBtn {...item} />;
+      }}
+      onEndReached={appendMore}
+      onRefresh={() => FirstTimeLoad(true)}
+      ListFooterComponent={() =>
+        fetching && !refreshing ? (
+          <ActivityIndicator style={{alignSelf: 'center'}} />
+        ) : null
+      }
+    />
   );
 };
 
-const OrderBtn = ({
-  title = '',
-  des = '',
-  time = '',
-  price = 0,
-}: {
-  title: string;
-  des: string;
-  time: string;
-  price: number;
-}) => {
-  const onPress = () => navigateWithParams('orderDetail', {orderNumber: 1111});
+const OrderBtn = (item: order) => {
+  const onPress = () => navigateWithParams('orderDetail', {orderItem: item});
+  const totalPrice =
+    item.deliveryCharges +
+    item.items.reduce((pre, {qty, price: prize}) => {
+      return prize * qty + pre;
+    }, 0);
   return (
     <View style={styles.orderBtn}>
       <Pressable onPress={onPress}>
@@ -107,15 +113,23 @@ const OrderBtn = ({
         <Pressable onPress={onPress}>
           <View style={styles.rowify}>
             <Text style={styles.itemText} numberOfLines={1}>
-              {title}
+              {item?.foodProvider}
             </Text>
-            <Text style={styles.priceText}>£. {getPriceFormat(price)} </Text>
+            <Text style={styles.priceText}>
+              £. {getPriceFormat(totalPrice)}
+            </Text>
           </View>
-          <Text style={[styles.infoText, {marginBottom: 8}]}>{des}</Text>
+          <Text
+            style={[
+              styles.infoText,
+              {marginBottom: 8},
+            ]}>{`${item.items[0].qty} ${item.items[0].name}`}</Text>
         </Pressable>
         <View style={styles.rowify}>
           <Pressable onPress={onPress}>
-            <Text style={styles.infoText}>{time}</Text>
+            <Text style={styles.infoText}>
+              {getFormattedDate(item?.created_at, true)}
+            </Text>
           </Pressable>
           <TouchableOpacity activeOpacity={0.85} style={styles.reOrderBtn}>
             <Text style={styles.reOrderText}>REORDER</Text>

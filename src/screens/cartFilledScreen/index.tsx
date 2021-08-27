@@ -7,18 +7,17 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
   Platform,
 } from 'react-native';
-import {Colors, Images, TextFamily} from '../../constants';
-import getShadow from '../../utils/shadow';
-import {getPriceFormat} from '../../utils/libs';
+import {Colors, Images, TextFamily} from '@constants';
+import getShadow from '@utils/shadow';
+import {getPriceFormat} from '@utils/libs';
 import {useSelector} from 'react-redux';
 import {
   OrdersStatesInterface,
   InitialUserInterface,
-} from '../../constants/interfaces';
-import {Cards, Headers, BottomSheet} from '../../components';
+} from '@constants/interfaces';
+import {Cards, Headers, BottomSheet} from '@components';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 const CARTFilledScreen = ({
   navigation,

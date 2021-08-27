@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, ViewStyle} from 'react-native';
-import {Colors, TextFamily} from '../constants';
+import {Colors, TextFamily} from '@constants';
 const BadgeSize = 18;
 const Badge = ({
   count = 0,

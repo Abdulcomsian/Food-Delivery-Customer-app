@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   KeyboardTypeOptions,
 } from 'react-native';
-import {Colors, TextFamily} from '../constants';
-import {getCustomData} from '../utils/libs';
+import {Colors, TextFamily} from '@constants';
+import {getCustomData} from '@utils/libs';
 const InputA = ({
   secureTextEntry = false,
   keyboardType = 'default',

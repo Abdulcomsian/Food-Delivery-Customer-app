@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {Buttons, Inputs} from '../../components';
-import {Colors, Images} from '../../constants';
+import {Buttons, Inputs} from '@components';
+import {Colors, Images} from '@constants';
 const PickUpStoreSearch = ({
   route,
   navigation,

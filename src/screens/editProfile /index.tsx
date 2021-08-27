@@ -1,41 +1,48 @@
+/* eslint-disable react-native/no-inline-styles */
+
 import React, {Fragment} from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import {StyleSheet, ScrollView, Image, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Images, Colors, TextFamily} from '../../constants';
-import {InitialUserInterface} from '../../constants/interfaces';
-import getShadow from '../../utils/shadow';
-import {Buttons, Inputs} from '../../components';
+import {Images, Colors, TextFamily} from '@constants';
+import {InitialUserInterface} from '@constants/interfaces';
+import Hooks from '@hooks';
+import getShadow from '@utils/shadow';
+import {Buttons, Inputs, ImageTaker} from '@components';
 const EditProfileScreen = () => {
   const {loggedIn, detail} = useSelector(
     ({USER}: {USER: InitialUserInterface}) => USER,
   );
+  const [keyBoardHeight] = Hooks.useKeyboard();
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
   return (
     <Fragment>
-      <View style={styles.cont}>
-        <TouchableOpacity
-          onPress={() => {}}
-          activeOpacity={0.85}
-          style={styles.camBtn}>
-          <Image source={Images.avatar} style={styles.image} />
-          <View style={styles.cameraView}>
-            <Image source={Images.camera} style={styles.camera} />
+      <View
+        style={[
+          styles.cont,
+          {paddingTop: (keyBoardHeight === 0 ? WP(20) : 0) + 20},
+        ]}>
+        {keyBoardHeight === 0 && (
+          <View style={styles.camBtn}>
+            <ImageTaker>
+              <Fragment>
+                <Image source={Images.avatar} style={styles.image} />
+                <View style={styles.cameraView}>
+                  <Image source={Images.camera} style={styles.camera} />
+                </View>
+              </Fragment>
+            </ImageTaker>
           </View>
-        </TouchableOpacity>
-        <View style={styles.inputCont}>
+        )}
+        <View
+          style={[
+            styles.inputCont,
+            {paddingTop: keyBoardHeight === 0 ? WP(40) : 20},
+          ]}>
           <ScrollView>
             <Inputs.InputB placeHolder={'Username'} />
-            <Inputs.InputB placeHolder={'Email'} />
+            <Inputs.InputB placeHolder={'Email'} keyboardType="email-address" />
             <Inputs.InputB placeHolder={'Phone'} keyboardType="phone-pad" />
             <Inputs.InputB placeHolder={'Gender'} />
             <Inputs.InputB placeHolder={'Address'} border={false} />
@@ -45,7 +52,6 @@ const EditProfileScreen = () => {
       <Buttons.ButtonA
         title={'Done'}
         onPress={() => {}}
-        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           borderRadius: 0,
           height: bottom ? 55 + bottom : 64,
@@ -62,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    paddingTop: WP(20) + 20,
   },
   camBtn: {position: 'absolute', top: 20, zIndex: 10},
   image: {width: WP(40), height: WP(40), borderRadius: WP(20)},
@@ -86,9 +91,8 @@ const styles = StyleSheet.create({
   inputCont: {
     width: WP(100) - 30,
     borderRadius: 8,
-    ...getShadow(3),
-    paddingTop: WP(40),
     paddingHorizontal: 20,
+    ...getShadow(3),
   },
 });
 

@@ -1,22 +1,22 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useEffect, useRef, useMemo, useCallback} from 'react';
 import {
+  TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  Image,
   View,
   Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useDispatch} from 'react-redux';
+import Actions from '@redux/actions';
+import {navigate} from '@navigatorHelper';
+import {Colors, Images, TextFamily} from '@constants';
 import Inputs from './inputs';
 import Buttons from './buttons';
-import {Colors, Images, TextFamily} from '../constants';
-import Actions from '../redux/actions';
-import {navigate} from '../navigator/navigationHelper';
 const BottomSheetSheetA = ({status}: {status: boolean}) => {
   const dispatch = useDispatch();
   const {bottom} = useSafeAreaInsets();

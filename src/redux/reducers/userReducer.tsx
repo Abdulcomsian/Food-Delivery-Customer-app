@@ -1,8 +1,5 @@
 import ActionType from '../types';
-import {
-  InitialUserInterface,
-  reducerArgument,
-} from '../../constants/interfaces';
+import {InitialUserInterface, reducerArgument} from '@constants/interfaces';
 const InitialUserState: InitialUserInterface = {
   loggedIn: false,
   online: false,
