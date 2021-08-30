@@ -165,6 +165,20 @@ const monthShortNames = [
   'Nov',
   'Dec',
 ];
+const isItOpenNow = (time: string) => {
+  const [sT, eT] = time.split(' - ');
+  const current = new Date().getHours();
+  const res = {
+    Start: convertTto24(sT),
+    End: convertTto24(eT),
+  };
+  console.log('NN', {...res, current});
+  const isIt: boolean =
+    res.End > res.Start
+      ? res.Start <= current && res.End > current
+      : res.Start <= current && res.End > current;
+  return [isIt, sT, eT];
+};
 const weekDays = ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'];
 const getPriceFormat = (price: string | number) => {
   const priceX = parseInt(price);
@@ -186,7 +200,26 @@ const getFormattedDate = (dateToBeFormated: string, short: boolean = false) => {
     ? `${day} ${monthShortNames[mmonth]}, ${parseInt(year) % 100}`
     : `${weekDays[thisDay.getDay()]}, ${day} ${monthNames[mmonth]}, ${year}`;
 };
+const convertTto24 = (time12h: string) => {
+  let hours = '';
+  let modifier = '';
+  time12h
+    .split('')
+    .forEach(character =>
+      isNaN(character)
+        ? (modifier = modifier + '' + character)
+        : (hours = hours + '' + character),
+    );
+  if (hours === '12') {
+    hours = 0;
+  }
+  if (modifier === 'PM') {
+    hours = parseInt(hours, 10) + 12;
+  }
+  return parseInt(hours, 10);
+};
 export {
+  isItOpenNow,
   objectIsEmpty,
   getCustomData,
   getMonth,

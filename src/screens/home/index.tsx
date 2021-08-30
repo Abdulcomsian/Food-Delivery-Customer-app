@@ -9,13 +9,17 @@ import {
   ScrollView,
   ViewStyle,
   ImageBackground,
+  Platform,
 } from 'react-native';
 import {Colors, Images, TextFamily} from '@constants';
 import getShadow from '@utils/shadow';
+import {banner, foodPlace, foodCategorie} from '@constants/interfaces';
 import {Cards, Headers, BottomSheet} from '@components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
-import {Platform} from 'react-native';
+import {HeaderBackButton} from '@react-navigation/stack';
+import APIS from '@utils/APIs';
+import {isItOpenNow} from '@utils/libs';
 const HomeScreen = ({
   navigation,
   route,
@@ -23,11 +27,33 @@ const HomeScreen = ({
   navigation: object;
   route: object;
 }) => {
-  const {top, bottom}: EdgeInsets = useSafeAreaInsets();
+  const {bottom}: EdgeInsets = useSafeAreaInsets();
+  const [featuredFoodCat, setFeaturedFoodCat] = useState<Array<foodCategorie>>(
+    [],
+  );
+  const [banners, setBanners] = useState<Array<banner>>([]);
+  const [newPlaces, setNewPlaces] = useState<Array<foodPlace>>([]);
+  const [allPlaces, setAllPlaces] = useState<Array<foodPlace>>([]);
   const [locEModal, setLocEModal] = useState<boolean>(false);
-  // useEffect(() => {
-  //   setLocEModal(true);
-  // }, []);
+  useEffect(() => {
+    APIS.getHomePublicData()
+      .then(res => {
+        if (res) {
+          const {
+            featuredFoods,
+            banners: bnners,
+            foodPlaces,
+            allFoodPlace,
+          } = res;
+          setFeaturedFoodCat(featuredFoods);
+          setBanners(bnners);
+          setNewPlaces(foodPlaces);
+          setAllPlaces(allFoodPlace);
+        }
+      })
+      .finally(() => {});
+    //setLocEModal(true);
+  }, []);
   return (
     <Fragment>
       <Cards.LocationEnabler visible={locEModal} setVisible={setLocEModal} />
@@ -40,44 +66,61 @@ const HomeScreen = ({
             paddingBottom: bottom + 100,
           }}>
           <ScrollView horizontal={true} contentContainerStyle={styles.rowify}>
-            {[1, 2, 3, 4].map((item, index) => {
+            {featuredFoodCat.map((item, index) => {
               return (
                 <View key={'Item' + index} style={styles.PopularCardView}>
                   <View style={styles.TrapezoidStyle} />
-                  <Image source={Images.burger} style={styles.FoodStyle} />
-                  <Text style={styles.FoodTitle}>Burger</Text>
+                  <Image source={{uri: item.image}} style={styles.FoodStyle} />
+                  <Text style={styles.FoodTitle}>{item.name}</Text>
                 </View>
               );
             })}
           </ScrollView>
-          <TouchableOpacity style={styles.card} activeOpacity={0.85}>
-            <View style={{flex: 1}}>
-              <Text style={styles.cardTitle}>Black Friday Deal here !</Text>
-              <Text style={styles.cardSubTitle}>
-                Get 20% deal for you on all pizza bucket.Enjoy this Friday with
-                amazing deal.
-              </Text>
-            </View>
-            <Image source={Images.whiteRightArrow} style={styles.whiteArrow} />
-          </TouchableOpacity>
+          {banners.length > 0 && (
+            <TouchableOpacity style={styles.card} activeOpacity={0.85}>
+              <View style={{flex: 1}}>
+                <Text style={styles.cardTitle}>{banners[0].heading}</Text>
+                <Text style={styles.cardSubTitle}>{banners[0].subHeading}</Text>
+              </View>
+              {/* <Image
+                source={Images.whiteRightArrow}
+                style={styles.whiteArrow}
+              /> */}
+              <HeaderBackButton
+                labelVisible={false}
+                style={{transform: [{rotate: '180deg'}], width: 20}}
+                tintColor={Colors.white}
+              />
+            </TouchableOpacity>
+          )}
+
           <TouchableOpacity style={styles.TextBtn} activeOpacity={0.85}>
             <View style={{flex: 1}}>
               <Text style={styles.TextBtntitle}>Discover new places</Text>
             </View>
-            <Image source={Images.redRightArrow} style={styles.whiteArrow} />
+            <HeaderBackButton
+              labelVisible={false}
+              style={{transform: [{rotate: '180deg'}], width: 20}}
+              tintColor={Colors.red}
+            />
+            {/* <Image source={Images.redRightArrow} style={styles.whiteArrow} /> */}
           </TouchableOpacity>
           <ScrollView
             horizontal={true}
             contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
-            {[1, 2, 3, 4].map((item, index) => {
-              return <Cards.FoodCard1 key={'Food_' + index} />;
+            {newPlaces.map((item, index) => {
+              return <Cards.FoodCard1 key={'Food_' + index} {...item} />;
             })}
           </ScrollView>
           <TouchableOpacity style={styles.TextBtn} activeOpacity={0.85}>
             <View style={{flex: 1}}>
               <Text style={styles.TextBtntitle}>Featured</Text>
             </View>
-            <Image source={Images.redRightArrow} style={styles.whiteArrow} />
+            <HeaderBackButton
+              labelVisible={false}
+              style={{transform: [{rotate: '180deg'}]}}
+              tintColor={Colors.red}
+            />
           </TouchableOpacity>
           <ScrollView
             horizontal={true}
@@ -91,50 +134,45 @@ const HomeScreen = ({
               <Text style={styles.TextBtntitle}>All Restaurants</Text>
             </View>
           </TouchableOpacity>
-          {[
-            {discount: '30%'},
-            {},
-            {discount: '30%'},
-            {delivery: 100},
-            {until: '12:00 PM'},
-            {},
-          ].map((item, index) => {
+          {allPlaces.map((item: foodPlace, index: number) => {
+            isItOpenNow(item.timing);
+            const [opened, Start, End] = isItOpenNow(item.timing);
             return (
               <View key={'_RestCard' + index} style={styles.RestaurantCard}>
                 <TouchableOpacity style={styles.heartPos} activeOpacity={0.85}>
                   <Image source={Images.favOff} style={styles.heart} />
                 </TouchableOpacity>
-                <View style={styles.tab2}>
+                {/* <View style={styles.tab2}>
                   <Text style={styles.time2}>20-25 mins</Text>
-                </View>
+                </View> */}
                 <ImageBackground
-                  source={Images.food}
-                  style={[
-                    styles.landScapeImage,
-                    {opacity: item.until ? 0.3 : 1},
-                  ]}>
+                  source={{uri: item.avatar}}
+                  style={[styles.landScapeImage, {opacity: opened ? 1 : 0.3}]}>
                   <View style={styles.overlay} />
                 </ImageBackground>
-                {item.until && item.until !== '' && (
-                  <Text style={styles.until}>Closed Until {'12:00 PM'}</Text>
+                {!opened && (
+                  <Text style={styles.until}>Closed Until {Start}</Text>
                 )}
-                {!(item.until && item.until !== '') && (
+                {opened && (
                   <Fragment>
-                    {item.discount && item.discount !== '' && (
-                      <View style={styles.discount}>
-                        <Text style={styles.disTiny}>Flat</Text>
-                        <Text style={styles.disper}>{item.discount}</Text>
-                        <Text style={styles.disTiny}>Off</Text>
-                      </View>
-                    )}
-                    {item.delivery !== undefined && item.delivery !== 0 ? (
+                    {item.discount !== 0 &&
+                      item.discount !== '' &&
+                      item.discount !== undefined && (
+                        <View style={styles.discount}>
+                          <Text style={styles.disTiny}>Flat</Text>
+                          <Text style={styles.disper}>{item.discount}</Text>
+                          <Text style={styles.disTiny}>Off</Text>
+                        </View>
+                      )}
+                    {item.deliveryCharges !== undefined &&
+                    item.deliveryCharges !== 0 ? (
                       <View
                         style={[
                           styles.redPending2,
                           {backgroundColor: Colors.green2},
                         ]}>
                         <Text style={styles.tinyDetail2x}>
-                          Delivery:Rs.{item.delivery}
+                          Delivery:Rs.{item.deliveryCharges}
                         </Text>
                       </View>
                     ) : (
@@ -149,8 +187,8 @@ const HomeScreen = ({
                     styles.rowify,
                     {justifyContent: 'space-between', paddingHorizontal: 12},
                   ]}>
-                  <Text style={styles.restName}>Burger King</Text>
-                  <Text style={styles.price}>£. 18.00</Text>
+                  <Text style={styles.restName}>{item.foodProvider}</Text>
+                  {/* <Text style={styles.price}>£. 18.00</Text> */}
                 </View>
                 <View
                   style={[
@@ -162,13 +200,15 @@ const HomeScreen = ({
                       marginBottom: 14,
                     },
                   ]}>
-                  <Text style={styles.address}>72 Cecil Street,NORTH RYDE</Text>
+                  <Text style={styles.address}>{item.foodProviderAddress}</Text>
                   <View style={styles.rowify}>
                     <Image source={Images.star} style={styles.star} />
                     <Text style={[styles.tinyDetail1, {marginHorizontal: 3}]}>
-                      4.6
+                      {item.reviewStars}
                     </Text>
-                    <Text style={styles.tinyDetail2}>(128 ratings)</Text>
+                    <Text style={styles.tinyDetail2}>
+                      ({item.ratings} ratings)
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -414,8 +454,9 @@ const styles = StyleSheet.create({
     color: Colors.Grey6,
   },
   FoodStyle: {
-    width: 100,
-    height: 100,
+    width: 85,
+    height: 85,
+    borderRadius: 43,
     alignSelf: 'center',
     position: 'absolute',
     top: 0,

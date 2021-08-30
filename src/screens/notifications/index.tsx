@@ -13,7 +13,7 @@ import {
 import FlatList from 'react-native-swipeable-list';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
-import {Colors} from '@constants';
+import {Colors, TextFamily} from '@constants';
 import APIs from '@utils/APIs';
 import {getFormattedDate} from '@utils/libs';
 import {useSelector} from 'react-redux';
@@ -221,10 +221,14 @@ const NotificationStyle = StyleSheet.create({
     borderRadius: 33,
     backgroundColor: Colors.dark,
   },
-  time: {fontSize: 12, fontFamily: 'Roboto-Bold'},
+  time: {
+    fontSize: Platform.OS === 'android' ? 13 : 12,
+    fontFamily: TextFamily.ROBOTO_BOLD,
+    marginTop: 5,
+  },
   NotiDetail: {
     fontSize: Platform.OS === 'android' ? 16 : 15,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: TextFamily.ROBOTO_REGULAR,
   },
   reactAngle: {
     width: WP(100) - 106,

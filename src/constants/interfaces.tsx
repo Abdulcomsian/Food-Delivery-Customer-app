@@ -20,7 +20,18 @@ export interface AppStatesInterface {
   filterBottomSheet: boolean;
   loginBottomSheet: boolean;
 }
-
+export interface foodCategorie {
+  image: string;
+  name: string;
+  id: number;
+  cid: number;
+}
+export interface banner {
+  heading: string;
+  subHeading: string;
+  type: string;
+  url: string;
+}
 export interface order {
   id: number;
   uid: number;
@@ -35,7 +46,18 @@ export interface order {
   deliveryCharges: number;
   foodProviderAddress: string;
 }
-
+export interface foodPlace {
+  id: number;
+  avatar: string;
+  reviewStars: number;
+  ratings: number;
+  foodProvider: string;
+  foodProviderAddress: string;
+  deliveryCharges: number;
+  discount: number;
+  created_at: string;
+  timing: string;
+}
 export interface Item {
   name: string;
   qty: number;

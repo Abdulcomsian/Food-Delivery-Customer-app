@@ -1,5 +1,5 @@
 import Axios, {AxiosResponse, AxiosError} from 'axios';
-import {order} from '@constants/interfaces';
+import {order, foodCategorie, banner, foodPlace} from '@constants/interfaces';
 const baseURL = 'http://localhost:3000/';
 const axios = Axios.create({
   baseURL,
@@ -107,10 +107,72 @@ const getOrderList = ({
     })
     .catch(() => []);
 };
+const getFoodCategories = ({
+  page = 1,
+  limit = 10,
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<Array<foodCategorie>> => {
+  return axios
+    .get(`/featuredFoodCategories?_page=${page}&_limit=${limit}`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
+};
+const getBanners = (): Promise<Array<banner>> => {
+  return axios
+    .get(`/todayBanners`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
+};
+const getFoodPlaces = ({
+  page = 1,
+  limit = 5,
+}: {
+  page?: number;
+  limit?: number;
+}): Promise<Array<foodPlace>> => {
+  return axios
+    .get(`/places?_page=${page}&_limit=${limit}`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
+};
+const getHomePublicData = () => {
+  const promise1 = getFoodCategories({});
+  const promise2 = getBanners();
+  const promise3 = getFoodPlaces({});
+  const promise4 = getFoodPlaces({page: 1, limit: 10});
+  return Promise.all([promise1, promise2, promise3, promise4])
+    .then(RES => {
+      if (Array.isArray(RES)) {
+        const [featuredFoods, banners, foodPlaces, allFoodPlace] = RES;
+        return {featuredFoods, banners, foodPlaces, allFoodPlace};
+      } else {
+        return null;
+      }
+    })
+    .catch(() => null);
+};
 export default {
   signIn,
   getNotifications,
   getOrderList,
   readNotification,
   removeNotification,
+  getFoodCategories,
+  getBanners,
+  getFoodPlaces,
+  getHomePublicData,
 };

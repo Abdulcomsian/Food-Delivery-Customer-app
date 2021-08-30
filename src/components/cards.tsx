@@ -21,6 +21,7 @@ import getShadow from '@utils/shadow';
 import {getPriceFormat, objectIsEmpty} from '@utils/libs';
 import {navigate, navigationRef, navigateWithParams} from '@navigatorHelper';
 import Actions from '@redux/actions';
+import {banner, foodPlace, foodCategorie} from '@constants/interfaces';
 import {Headers} from '@components';
 import {Colors, Images, TextFamily} from '@constants';
 
@@ -107,7 +108,7 @@ const PasswordReset = ({
     </Modal>
   );
 };
-const FoodCard1 = () => {
+const FoodCard1 = (item: foodPlace) => {
   return (
     <View style={foodStyles.PortraitViewA}>
       <TouchableOpacity style={foodStyles.heartPos} activeOpacity={0.85}>
@@ -116,22 +117,34 @@ const FoodCard1 = () => {
       <TouchableOpacity
         activeOpacity={0.85}
         onPress={() => {
-          navigateWithParams('restaurantMenu', {restaurantId: 123});
+          navigateWithParams('restaurantMenu', {
+            restaurantId: 123,
+            restaurant: item,
+          });
         }}>
-        <ImageBackground source={Images.food} style={foodStyles.PortraitImageA}>
+        <ImageBackground
+          source={{uri: item.avatar}}
+          style={foodStyles.PortraitImageA}>
           <View style={foodStyles.overlay} />
         </ImageBackground>
         <Text style={foodStyles.FoodTitleB} numberOfLines={1}>
-          Burger
+          {item.foodProvider}
         </Text>
         <Text style={foodStyles.FoodTitleC} numberOfLines={1}>
-          72 Cecil Street,NORTH RYDE
+          {item.foodProviderAddress}
         </Text>
         <View style={[foodStyles.rowify, {justifyContent: 'space-between'}]}>
           <Image source={Images.star} style={foodStyles.star} />
-          <Text style={foodStyles.tinyDetail1}>4.6</Text>
-          <Text style={foodStyles.tinyDetail2}>(128 ratings)</Text>
-          <View style={foodStyles.redPending}>
+          <Text style={foodStyles.tinyDetail1}>{item.reviewStars}</Text>
+          <Text style={foodStyles.tinyDetail2}>({item.ratings} ratings)</Text>
+          <View
+            style={[
+              foodStyles.redPending,
+              {
+                backgroundColor:
+                  item.deliveryCharges === 0 ? Colors.red : Colors.white,
+              },
+            ]}>
             <Text style={foodStyles.tinyDetail3}>Free Delivery</Text>
           </View>
         </View>
