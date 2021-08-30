@@ -11,6 +11,7 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
+import {HeaderBackButton} from '@react-navigation/stack';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
@@ -47,12 +48,18 @@ const OrderDetail = ({
           <View style={styles.overlay} />
           <View style={{paddingTop: top}}>
             <View style={styles.rowify}>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={[styles.heartPos, {alignItems: 'flex-start'}]}
                 activeOpacity={0.85}
                 onPress={navigation.goBack}>
                 <Image source={Images.leftArrow} style={styles.arrow} />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
+              <HeaderBackButton
+                labelVisible={false}
+                style={[styles.heartPos, {alignItems: 'flex-start'}]}
+                tintColor={Colors.white}
+                onPress={navigation.goBack}
+              />
             </View>
             <View style={styles.imageBottomView}>
               <Text style={styles.imageMainTitle} numberOfLines={2}>

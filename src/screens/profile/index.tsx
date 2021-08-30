@@ -12,6 +12,7 @@ import {
 import {useSelector} from 'react-redux';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
+import {HeaderBackButton} from '@react-navigation/stack';
 import {Images, Colors, TextFamily} from '@constants';
 import getShadow from '@utils/shadow';
 import {InitialUserInterface} from '@constants/interfaces';
@@ -61,14 +62,20 @@ const ProfileBtn = ({title = '', nav}: {title: string; nav: string}) => (
       nav && navigate(nav);
     }}>
     <Text style={styles.profileBtnText}>{title}</Text>
-    <Image
+    {/* <Image
       source={Images.redRightArrow}
       style={{width: 27, height: 22, resizeMode: 'contain'}}
+    /> */}
+    <HeaderBackButton
+      labelVisible={false}
+      style={{transform: [{rotate: '180deg'}]}}
+      tintColor={Colors.red}
     />
   </TouchableOpacity>
 );
 const styles = StyleSheet.create({
   image: {width: WP(50), height: WP(50), borderRadius: WP(25)},
+
   name: {
     marginTop: 15,
     fontFamily: TextFamily.ROBOTO_REGULAR,
@@ -80,7 +87,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   profileBtn: {
-    paddingRight: 15,
+    paddingRight: 5,
     paddingLeft: 25,
     height: 64,
     flexDirection: 'row',
