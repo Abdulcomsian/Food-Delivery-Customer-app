@@ -7,26 +7,19 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  ViewStyle,
-  ImageBackground,
   Platform,
 } from 'react-native';
-import {Colors, Images, TextFamily} from '@constants';
+import {Colors, TextFamily} from '@constants';
 import getShadow from '@utils/shadow';
 import {banner, foodPlace, foodCategorie} from '@constants/interfaces';
-import {Cards, Headers, BottomSheet} from '@components';
+import {Cards, Headers, Loader} from '@components';
 import {widthPercentageToDP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 import {HeaderBackButton} from '@react-navigation/stack';
 import APIS from '@utils/APIs';
-import {isItOpenNow} from '@utils/libs';
-const HomeScreen = ({
-  navigation,
-  route,
-}: {
-  navigation: object;
-  route: object;
-}) => {
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+//import {isItOpenNow} from '@utils/libs';
+const HomeScreen = ({navigation}: {navigation: object}) => {
   const {bottom}: EdgeInsets = useSafeAreaInsets();
   const [featuredFoodCat, setFeaturedFoodCat] = useState<Array<foodCategorie>>(
     [],
@@ -34,7 +27,9 @@ const HomeScreen = ({
   const [banners, setBanners] = useState<Array<banner>>([]);
   const [newPlaces, setNewPlaces] = useState<Array<foodPlace>>([]);
   const [allPlaces, setAllPlaces] = useState<Array<foodPlace>>([]);
+  const [featuredPlaces, setFeaturedPlaces] = useState<Array<foodPlace>>([]);
   const [locEModal, setLocEModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     APIS.getHomePublicData()
       .then(res => {
@@ -44,347 +39,135 @@ const HomeScreen = ({
             banners: bnners,
             foodPlaces,
             allFoodPlace,
+            featuredFoodPlaces,
           } = res;
           setFeaturedFoodCat(featuredFoods);
           setBanners(bnners);
           setNewPlaces(foodPlaces);
           setAllPlaces(allFoodPlace);
+          setFeaturedPlaces(featuredFoodPlaces);
         }
       })
-      .finally(() => {});
+      .finally(() => {
+        setLoading(false);
+      });
     //setLocEModal(true);
   }, []);
   return (
     <Fragment>
+      <Loader visible={loading} />
       <Cards.LocationEnabler visible={locEModal} setVisible={setLocEModal} />
       <View style={styles.ScreenContain}>
         <Headers.HeaderA />
         <Headers.SearchBar />
-        <ScrollView
-          contentContainerStyle={{
-            paddingTop: 10,
-            paddingBottom: bottom + 100,
-          }}>
-          <ScrollView horizontal={true} contentContainerStyle={styles.rowify}>
-            {featuredFoodCat.map((item, index) => {
-              return (
-                <View key={'Item' + index} style={styles.PopularCardView}>
-                  <View style={styles.TrapezoidStyle} />
-                  <Image source={{uri: item.image}} style={styles.FoodStyle} />
-                  <Text style={styles.FoodTitle}>{item.name}</Text>
+        {!loading && (
+          <ScrollView
+            contentContainerStyle={{
+              paddingTop: 10,
+              paddingBottom: bottom + 100,
+            }}>
+            <ScrollView horizontal={true} contentContainerStyle={styles.rowify}>
+              {featuredFoodCat.map((item, index) => {
+                return (
+                  <TouchableWithoutFeedback key={'Item' + index}>
+                    <View style={styles.PopularCardView}>
+                      <View style={styles.TrapezoidStyle} />
+                      <Image
+                        source={{uri: item.image}}
+                        style={styles.FoodStyle}
+                      />
+                      <Text style={styles.FoodTitle}>{item.name}</Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                );
+              })}
+            </ScrollView>
+            {banners.length > 0 && (
+              <TouchableOpacity style={styles.card} activeOpacity={0.85}>
+                <View style={{flex: 1}}>
+                  <Text style={styles.cardTitle}>{banners[0].heading}</Text>
+                  <Text style={styles.cardSubTitle}>
+                    {banners[0].subHeading}
+                  </Text>
                 </View>
+                <HeaderBackButton
+                  labelVisible={false}
+                  style={{transform: [{rotate: '180deg'}], width: 20}}
+                  tintColor={Colors.white}
+                />
+              </TouchableOpacity>
+            )}
+            <HeadingLabel title="Discover new places" navigation={navigation} />
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
+              {newPlaces.map((item, index) => {
+                return (
+                  <Cards.FoodCard1
+                    key={'Food_' + index}
+                    restaurant={item}
+                    navigation={navigation}
+                  />
+                );
+              })}
+            </ScrollView>
+            <HeadingLabel title="Featured" navigation={navigation} />
+            <ScrollView
+              horizontal={true}
+              contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
+              {featuredPlaces.map((item, index) => {
+                return (
+                  <Cards.FoodCard2
+                    key={'FoodCard_' + index}
+                    restaurant={item}
+                    navigation={navigation}
+                  />
+                );
+              })}
+            </ScrollView>
+            <HeadingLabel title="All Restaurants" navigation={navigation} />
+            {allPlaces.map((item: foodPlace, index: number) => {
+              //const [opened, Start, End] = isItOpenNow(item.timing);
+              return (
+                <Cards.RestaurantCard
+                  key={'_RestCard' + index}
+                  navigation={navigation}
+                  restaurant={item}
+                />
               );
             })}
           </ScrollView>
-          {banners.length > 0 && (
-            <TouchableOpacity style={styles.card} activeOpacity={0.85}>
-              <View style={{flex: 1}}>
-                <Text style={styles.cardTitle}>{banners[0].heading}</Text>
-                <Text style={styles.cardSubTitle}>{banners[0].subHeading}</Text>
-              </View>
-              {/* <Image
-                source={Images.whiteRightArrow}
-                style={styles.whiteArrow}
-              /> */}
-              <HeaderBackButton
-                labelVisible={false}
-                style={{transform: [{rotate: '180deg'}], width: 20}}
-                tintColor={Colors.white}
-              />
-            </TouchableOpacity>
-          )}
-
-          <TouchableOpacity style={styles.TextBtn} activeOpacity={0.85}>
-            <View style={{flex: 1}}>
-              <Text style={styles.TextBtntitle}>Discover new places</Text>
-            </View>
-            <HeaderBackButton
-              labelVisible={false}
-              style={{transform: [{rotate: '180deg'}], width: 20}}
-              tintColor={Colors.red}
-            />
-            {/* <Image source={Images.redRightArrow} style={styles.whiteArrow} /> */}
-          </TouchableOpacity>
-          <ScrollView
-            horizontal={true}
-            contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
-            {newPlaces.map((item, index) => {
-              return <Cards.FoodCard1 key={'Food_' + index} {...item} />;
-            })}
-          </ScrollView>
-          <TouchableOpacity style={styles.TextBtn} activeOpacity={0.85}>
-            <View style={{flex: 1}}>
-              <Text style={styles.TextBtntitle}>Featured</Text>
-            </View>
-            <HeaderBackButton
-              labelVisible={false}
-              style={{transform: [{rotate: '180deg'}]}}
-              tintColor={Colors.red}
-            />
-          </TouchableOpacity>
-          <ScrollView
-            horizontal={true}
-            contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
-            {[1, 2, 3, 4].map((item, index) => {
-              return <Cards.FoodCard2 key={'FoodCard_' + index} />;
-            })}
-          </ScrollView>
-          <TouchableOpacity style={styles.TextBtn} activeOpacity={0.85}>
-            <View style={{flex: 1}}>
-              <Text style={styles.TextBtntitle}>All Restaurants</Text>
-            </View>
-          </TouchableOpacity>
-          {allPlaces.map((item: foodPlace, index: number) => {
-            isItOpenNow(item.timing);
-            const [opened, Start, End] = isItOpenNow(item.timing);
-            return (
-              <View key={'_RestCard' + index} style={styles.RestaurantCard}>
-                <TouchableOpacity style={styles.heartPos} activeOpacity={0.85}>
-                  <Image source={Images.favOff} style={styles.heart} />
-                </TouchableOpacity>
-                {/* <View style={styles.tab2}>
-                  <Text style={styles.time2}>20-25 mins</Text>
-                </View> */}
-                <ImageBackground
-                  source={{uri: item.avatar}}
-                  style={[styles.landScapeImage, {opacity: opened ? 1 : 0.3}]}>
-                  <View style={styles.overlay} />
-                </ImageBackground>
-                {!opened && (
-                  <Text style={styles.until}>Closed Until {Start}</Text>
-                )}
-                {opened && (
-                  <Fragment>
-                    {item.discount !== 0 &&
-                      item.discount !== '' &&
-                      item.discount !== undefined && (
-                        <View style={styles.discount}>
-                          <Text style={styles.disTiny}>Flat</Text>
-                          <Text style={styles.disper}>{item.discount}</Text>
-                          <Text style={styles.disTiny}>Off</Text>
-                        </View>
-                      )}
-                    {item.deliveryCharges !== undefined &&
-                    item.deliveryCharges !== 0 ? (
-                      <View
-                        style={[
-                          styles.redPending2,
-                          {backgroundColor: Colors.green2},
-                        ]}>
-                        <Text style={styles.tinyDetail2x}>
-                          Delivery:Rs.{item.deliveryCharges}
-                        </Text>
-                      </View>
-                    ) : (
-                      <View style={styles.redPending2}>
-                        <Text style={styles.tinyDetail2x}>Free Delivery</Text>
-                      </View>
-                    )}
-                  </Fragment>
-                )}
-                <View
-                  style={[
-                    styles.rowify,
-                    {justifyContent: 'space-between', paddingHorizontal: 12},
-                  ]}>
-                  <Text style={styles.restName}>{item.foodProvider}</Text>
-                  {/* <Text style={styles.price}>£. 18.00</Text> */}
-                </View>
-                <View
-                  style={[
-                    styles.rowify,
-                    {
-                      justifyContent: 'space-between',
-                      paddingHorizontal: 12,
-                      marginTop: 3,
-                      marginBottom: 14,
-                    },
-                  ]}>
-                  <Text style={styles.address}>{item.foodProviderAddress}</Text>
-                  <View style={styles.rowify}>
-                    <Image source={Images.star} style={styles.star} />
-                    <Text style={[styles.tinyDetail1, {marginHorizontal: 3}]}>
-                      {item.reviewStars}
-                    </Text>
-                    <Text style={styles.tinyDetail2}>
-                      ({item.ratings} ratings)
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            );
-          })}
-        </ScrollView>
+        )}
       </View>
     </Fragment>
   );
 };
+const HeadingLabel = ({
+  title = '',
+  navigation = undefined,
+  screenKey = '',
+}: {
+  title?: string;
+  navigation?: any;
+  screenKey?: string;
+}) => (
+  <TouchableOpacity
+    style={styles.TextBtn}
+    activeOpacity={0.85}
+    onPress={() => {
+      navigation && screenKey && navigation.navigate(screenKey);
+    }}>
+    <View style={{flex: 1}}>
+      <Text style={styles.TextBtntitle}>{title}</Text>
+    </View>
+    <HeaderBackButton
+      labelVisible={false}
+      style={{transform: [{rotate: '180deg'}]}}
+      tintColor={Colors.red}
+    />
+  </TouchableOpacity>
+);
 const styles = StyleSheet.create({
-  disTiny: {
-    color: Colors.white,
-    textAlign: 'center',
-    fontSize: 12,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-  },
-  disper: {
-    color: Colors.white,
-    textAlign: 'center',
-    fontSize: 24,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-  },
-  until: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: 125,
-    fontFamily: TextFamily.ROBOTO_BLACK,
-    fontSize: 25,
-    color: Colors.green2,
-  },
-  whiteArrow: {width: 20, height: 20, resizeMode: 'contain'},
-  star: {width: 11, height: 11, resizeMode: 'contain'},
-  address: {fontSize: 16, color: Colors.Grey6},
-  restName: {fontSize: 31, fontFamily: TextFamily.ROBOTO_REGULAR},
-  price: {
-    fontSize: 16,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    color: Colors.darkBrown,
-  },
-  tab: {
-    ...getShadow(3),
-    borderRadius: 6,
-    position: 'absolute',
-    right: 9,
-    top: 105,
-  },
-  overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    backgroundColor: Colors.dark,
-    opacity: 0.3,
-    borderRadius: 6,
-  },
-  discount: {
-    width: 55,
-    height: 77,
-    position: 'absolute',
-    top: 0,
-    zIndex: 3,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    backgroundColor: Colors.green2,
-    borderRadius: 6,
-  },
-  landScapeImage: {
-    width: widthPercentageToDP(100) - 30,
-    height: 275,
-    borderRadius: 6,
-    marginBottom: 12,
-  },
-  tab2: {
-    ...getShadow(3),
-    borderRadius: 6,
-    position: 'absolute',
-    right: 30,
-    top: 260,
-    zIndex: 3,
-  },
-  RestaurantCard: {
-    ...getShadow(3),
-    alignSelf: 'center',
-    width: widthPercentageToDP(100) - 30,
-    marginBottom: 22,
-    borderRadius: 6,
-  },
-  tinyDetail1: {
-    fontSize: 13,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    color: Colors.dark,
-  },
-  redPending: {
-    paddingVertical: 2,
-    alignItems: 'center',
-    paddingHorizontal: 5,
-    borderRadius: 6,
-    backgroundColor: Colors.red,
-  },
-  redPending2: {
-    paddingVertical: 2,
-    alignItems: 'center',
-    paddingHorizontal: 5,
-    borderRadius: 6,
-    backgroundColor: Colors.red,
-    position: 'absolute',
-    top: 10,
-    left: 15,
-  },
-  tinyDetail2x: {
-    fontSize: 11,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    color: Colors.white,
-  },
-  tinyDetail2: {
-    fontSize: 13,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    color: Colors.Grey6,
-  },
-  tinyDetail3: {
-    fontSize: 11,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    color: Colors.white,
-  },
-  tinyDetail4: {},
-  time: {
-    fontSize: 12,
-    color: Colors.GreyTransparent6,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    margin: 6,
-  },
-  time2: {
-    fontSize: 14,
-    color: Colors.GreyTransparent6,
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    margin: 6,
-  },
-  PortraitImageA: {
-    borderRadius: 6,
-    height: 250,
-    width: 200,
-    resizeMode: 'cover',
-    marginBottom: 18,
-  },
-  PortraitImageB: {
-    borderRadius: 6,
-    height: 120,
-    width: 165,
-    resizeMode: 'cover',
-    marginBottom: 18,
-  },
-  heart: {width: 25, height: 25, resizeMode: 'contain'},
-  heartPos: {
-    top: 8,
-    position: 'absolute',
-    right: 3,
-    zIndex: 8,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    //...getShadow(3, Colors.Grey0),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  PortraitViewA: {
-    borderRadius: 6,
-    width: 200,
-    marginHorizontal: 8,
-  },
-  PortraitViewB: {
-    borderRadius: 6,
-    width: 165,
-    marginHorizontal: 8,
-  },
   TextBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -422,12 +205,7 @@ const styles = StyleSheet.create({
   },
   ScreenContain: {flex: 1, backgroundColor: Colors.white},
   rowify: {flexDirection: 'row', alignItems: 'center'},
-  shapedCont: {
-    borderTopLeftRadius: 800,
-    backgroundColor: Colors.dark,
-    height: 60,
-    width: 60,
-  },
+
   PopularCardView: {
     marginHorizontal: 5,
     height: 140,
@@ -443,15 +221,6 @@ const styles = StyleSheet.create({
     fontFamily: TextFamily.ROBOTO_REGULAR,
     textAlign: 'center',
     fontSize: 16,
-  },
-  FoodTitleB: {
-    fontFamily: TextFamily.ROBOTO_REGULAR,
-    fontSize: 17,
-  },
-  FoodTitleC: {
-    fontFamily: TextFamily.ROBOTO_LIGHT,
-    fontSize: 13,
-    color: Colors.Grey6,
   },
   FoodStyle: {
     width: 85,
@@ -473,33 +242,5 @@ const styles = StyleSheet.create({
     borderLeftColor: Colors.transparent,
     ...getShadow(Platform.OS === 'android' ? 0 : 4, Colors.transparent),
   },
-  heartx: {
-    width: 50,
-    height: 50,
-  },
-  heartShape: {
-    width: 30,
-    height: 45,
-    position: 'absolute',
-    top: 0,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    backgroundColor: '#6427d1',
-  },
-  leftHeart: {
-    transform: [{rotate: '-45deg'}],
-    left: 5,
-  },
-  rightHeart: {
-    transform: [{rotate: '45deg'}],
-    right: 5,
-  },
 });
 export default HomeScreen;
-
-const Heart = ({style, ...rest}: {style: ViewStyle}) => (
-  <View {...rest} style={[styles.heartx, style]}>
-    <View style={styles.leftHeart} />
-    <View style={styles.rightHeart} />
-  </View>
-);

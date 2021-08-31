@@ -80,13 +80,6 @@
       "message": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
     }
   ],
-  "achievements": [
-    {
-      "id": 1,
-      "uid": 1,
-      "onlineHr": 5
-    }
-  ],
   "orders": [
     {
       "id": 1,
@@ -290,5 +283,134 @@
       "timing": "9am - 3am"
     }
   ],
-  "featuredFoods": []
+  "menus": [
+    {
+      "rid": 1,
+      "id": 1,
+      "cat": "Burgers",
+      "items": [
+        {
+          "name": "tingA",
+          "price": 2,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 1
+        },
+        {
+          "name": "tingB",
+          "price": 8,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 2
+        },
+        {
+          "name": "tingC",
+          "price": 9,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 3
+        },
+        {
+          "name": "tingD",
+          "price": 10,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 4
+        },
+        {
+          "name": "tingE",
+          "price": 1,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 5
+        },
+        {
+          "name": "tingF",
+          "price": 5,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 6
+        },
+        {
+          "name": "tingI",
+          "price": 11,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 7
+        },
+        {
+          "name": "tingJ",
+          "price": 15,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 8
+        },
+        {
+          "name": "tingK",
+          "price": 0.5,
+          "image": "https://i.tribune.com.pk/media/images/1393024-cexzjtxkaiwwi-1493123788/1393024-cexzjtxkaiwwi-1493123788.jpg",
+          "id": 9
+        }
+      ]
+    },
+    {
+      "rid": 1,
+      "cat": "Pizza",
+      "id": 2,
+      "items": [
+        {
+          "name": "tingXA",
+          "price": 2,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 11
+        },
+        {
+          "name": "tingXB",
+          "price": 8,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 12
+        },
+        {
+          "name": "tingXC",
+          "price": 9,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 13
+        },
+        {
+          "name": "tingXD",
+          "price": 10,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 14
+        },
+        {
+          "name": "tingXE",
+          "price": 1,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 15
+        },
+        {
+          "name": "tingXF",
+          "price": 5,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 16
+        },
+        {
+          "name": "tingXI",
+          "price": 11,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 17
+        },
+        {
+          "name": "tingXJ",
+          "price": 15,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 18
+        },
+        {
+          "name": "tingXK",
+          "price": 0.5,
+          "image": "https://pizzamax.com.pk/statics/images/modal-pizza.png",
+          "id": 19
+        }
+      ]
+    },
+    {"rid": 1, "cat": "Pasta", "id": 3, "items": []},
+    {"rid": 1, "cat": "BBQ", "id": 4, "items": []},
+    {"rid": 1, "cat": "Beverage", "id": 5, "items": []},
+    {"rid": 1, "cat": "Desserts", "id": 6, "items": []},
+    {"rid": 2, "cat": "Others", "id": 7, "items": []}
+  ],
+  "categories": []
 }

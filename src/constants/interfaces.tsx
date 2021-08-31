@@ -63,3 +63,16 @@ export interface Item {
   qty: number;
   price: number;
 }
+export interface menus {
+  rid: number;
+  id: number;
+  cat: string;
+  items: foodItem[];
+}
+
+export interface foodItem {
+  name: string;
+  price: number;
+  image: string;
+  id: number;
+}

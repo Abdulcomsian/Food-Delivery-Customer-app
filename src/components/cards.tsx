@@ -108,7 +108,13 @@ const PasswordReset = ({
     </Modal>
   );
 };
-const FoodCard1 = (item: foodPlace) => {
+const FoodCard1 = ({
+  navigation,
+  restaurant,
+}: {
+  restaurant: foodPlace;
+  navigation: any;
+}) => {
   return (
     <View style={foodStyles.PortraitViewA}>
       <TouchableOpacity style={foodStyles.heartPos} activeOpacity={0.85}>
@@ -119,30 +125,32 @@ const FoodCard1 = (item: foodPlace) => {
         onPress={() => {
           navigateWithParams('restaurantMenu', {
             restaurantId: 123,
-            restaurant: item,
+            restaurant,
           });
         }}>
         <ImageBackground
-          source={{uri: item.avatar}}
+          source={{uri: restaurant.avatar}}
           style={foodStyles.PortraitImageA}>
           <View style={foodStyles.overlay} />
         </ImageBackground>
         <Text style={foodStyles.FoodTitleB} numberOfLines={1}>
-          {item.foodProvider}
+          {restaurant.foodProvider}
         </Text>
         <Text style={foodStyles.FoodTitleC} numberOfLines={1}>
-          {item.foodProviderAddress}
+          {restaurant.foodProviderAddress}
         </Text>
         <View style={[foodStyles.rowify, {justifyContent: 'space-between'}]}>
           <Image source={Images.star} style={foodStyles.star} />
-          <Text style={foodStyles.tinyDetail1}>{item.reviewStars}</Text>
-          <Text style={foodStyles.tinyDetail2}>({item.ratings} ratings)</Text>
+          <Text style={foodStyles.tinyDetail1}>{restaurant.reviewStars}</Text>
+          <Text style={foodStyles.tinyDetail2}>
+            ({restaurant.ratings} ratings)
+          </Text>
           <View
             style={[
               foodStyles.redPending,
               {
                 backgroundColor:
-                  item.deliveryCharges === 0 ? Colors.red : Colors.white,
+                  restaurant.deliveryCharges === 0 ? Colors.red : Colors.white,
               },
             ]}>
             <Text style={foodStyles.tinyDetail3}>Free Delivery</Text>
@@ -152,22 +160,139 @@ const FoodCard1 = (item: foodPlace) => {
     </View>
   );
 };
-const FoodCard2 = () => {
+const FoodCard2 = ({
+  navigation,
+  restaurant,
+}: {
+  restaurant: foodPlace;
+  navigation: any;
+}) => {
   return (
     <TouchableOpacity activeOpacity={0.85} style={foodStyles.PortraitViewB}>
-      <Image source={Images.food} style={foodStyles.PortraitImageB} />
+      <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={() => {
+          navigateWithParams('restaurantMenu', {
+            restaurantId: 123,
+            restaurant,
+          });
+        }}>
+        <Image
+          source={{uri: restaurant.avatar}}
+          style={foodStyles.PortraitImageB}
+        />
+      </TouchableOpacity>
       <View style={foodStyles.tab}>
         <Text style={foodStyles.time}>20-25 mins</Text>
       </View>
       <Text style={foodStyles.FoodTitleB} numberOfLines={1}>
-        Burger
+        {restaurant.foodProvider}
       </Text>
       <Text style={foodStyles.FoodTitleC} numberOfLines={1}>
-        72 Cecil Street,NORTH RYDE
+        {restaurant.foodProviderAddress}
       </Text>
     </TouchableOpacity>
   );
 };
+const RestaurantCard = ({
+  navigation,
+  restaurant,
+}: {
+  restaurant: foodPlace;
+  navigation: any;
+}) => {
+  return (
+    <View style={restaurantStyle.RestaurantCard}>
+      <TouchableOpacity
+        style={restaurantStyle.heartPos}
+        activeOpacity={0.85}
+        onPress={() => {}}>
+        <Image source={Images.favOff} style={restaurantStyle.heart} />
+      </TouchableOpacity>
+      {/* <View style={styles.tab2}>
+                  <Text style={styles.time2}>20-25 mins</Text>
+                </View> */}
+      <TouchableOpacity
+        activeOpacity={0.85}
+        onPress={() => {
+          navigateWithParams('restaurantMenu', {
+            restaurantId: 123,
+            restaurant,
+          });
+        }}>
+        <ImageBackground
+          source={{uri: restaurant.avatar}}
+          style={[restaurantStyle.landScapeImage, {opacity: true ? 1 : 0.3}]}>
+          <View style={restaurantStyle.overlay} />
+        </ImageBackground>
+      </TouchableOpacity>
+      {/* {false && (
+                  <Text style={styles.until}>Closed Until {Start}</Text>
+                )} */}
+      {true && (
+        <Fragment>
+          {restaurant.discount !== 0 && restaurant.discount !== undefined && (
+            <FlatDiscount percentage={restaurant.discount.toString()} />
+          )}
+          {restaurant.deliveryCharges !== undefined &&
+          restaurant.deliveryCharges !== 0 ? (
+            <View
+              style={[
+                restaurantStyle.redPending2,
+                {backgroundColor: Colors.green2},
+              ]}>
+              <Text style={restaurantStyle.tinyDetail2x}>
+                Delivery:Rs.{restaurant.deliveryCharges}
+              </Text>
+            </View>
+          ) : (
+            <View style={restaurantStyle.redPending2}>
+              <Text style={restaurantStyle.tinyDetail2x}>Free Delivery</Text>
+            </View>
+          )}
+        </Fragment>
+      )}
+      <View
+        style={[
+          restaurantStyle.rowify,
+          {justifyContent: 'space-between', paddingHorizontal: 12},
+        ]}>
+        <Text style={restaurantStyle.restName}>{restaurant.foodProvider}</Text>
+        {/* <Text style={styles.price}>£. 18.00</Text> */}
+      </View>
+      <View
+        style={[
+          restaurantStyle.rowify,
+          {
+            justifyContent: 'space-between',
+            paddingHorizontal: 12,
+            marginTop: 3,
+            marginBottom: 14,
+          },
+        ]}>
+        <Text style={restaurantStyle.address}>
+          {restaurant.foodProviderAddress}
+        </Text>
+        <View style={restaurantStyle.rowify}>
+          <Image source={Images.star} style={restaurantStyle.star} />
+          <Text style={[restaurantStyle.tinyDetail1, {marginHorizontal: 3}]}>
+            {restaurant.reviewStars}
+          </Text>
+          <Text style={restaurantStyle.tinyDetail2}>
+            ({restaurant.ratings} ratings)
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+const FlatDiscount = ({percentage = '0'}: {percentage?: string}) => (
+  <View style={restaurantStyle.discount}>
+    <Text style={restaurantStyle.disTiny}>Flat</Text>
+    <Text style={restaurantStyle.disper}>{percentage}%</Text>
+    <Text style={restaurantStyle.disTiny}>Off</Text>
+  </View>
+);
 const ChooseSubItem = ({
   visiblity = false,
   setVisiblity = () => {},
@@ -402,13 +527,6 @@ const Selector = ({selected = false}: {selected?: boolean}) => (
     }}
   />
 );
-export default {
-  LocationEnabler,
-  PasswordReset,
-  FoodCard1,
-  ChooseSubItem,
-  FoodCard2,
-};
 
 //-----------------------------------------------
 const cardStyles = StyleSheet.create({
@@ -483,11 +601,7 @@ const foodStyles = StyleSheet.create({
     top: 105,
   },
   overlay: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
+    flex: 1,
     backgroundColor: Colors.dark,
     opacity: 0.3,
     borderRadius: 6,
@@ -580,9 +694,11 @@ const foodStyles = StyleSheet.create({
     width: 200,
     resizeMode: 'cover',
     marginBottom: 18,
+    overflow: 'hidden',
   },
   PortraitImageB: {
     borderRadius: 6,
+    overflow: 'hidden',
     height: 120,
     width: 165,
     resizeMode: 'cover',
@@ -761,3 +877,287 @@ const ChooseOrder = StyleSheet.create({
     alignItems: 'center',
   },
 });
+const restaurantStyle = StyleSheet.create({
+  disTiny: {
+    color: Colors.white,
+    textAlign: 'center',
+    fontSize: 12,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
+  disper: {
+    color: Colors.white,
+    textAlign: 'center',
+    fontSize: 24,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+  },
+  until: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 125,
+    fontFamily: TextFamily.ROBOTO_BLACK,
+    fontSize: 25,
+    color: Colors.green2,
+  },
+  whiteArrow: {width: 20, height: 20, resizeMode: 'contain'},
+  star: {width: 11, height: 11, resizeMode: 'contain'},
+  address: {fontSize: 16, color: Colors.Grey6},
+  restName: {fontSize: 31, fontFamily: TextFamily.ROBOTO_REGULAR},
+  price: {
+    fontSize: 16,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    color: Colors.darkBrown,
+  },
+  tab: {
+    ...getShadow(3),
+    borderRadius: 6,
+    position: 'absolute',
+    right: 9,
+    top: 105,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: Colors.dark,
+    opacity: 0.3,
+    borderRadius: 6,
+  },
+  discount: {
+    width: 55,
+    height: 77,
+    position: 'absolute',
+    top: 0,
+    zIndex: 3,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.green2,
+    borderBottomRightRadius: 6,
+    borderBottomLeftRadius: 6,
+  },
+  landScapeImage: {
+    width: wp(100) - 30,
+    height: 275,
+    borderTopRightRadius: 6,
+    borderTopLeftRadius: 6,
+    marginBottom: 12,
+    overflow: 'hidden',
+  },
+  tab2: {
+    ...getShadow(3),
+    borderRadius: 6,
+    position: 'absolute',
+    right: 30,
+    top: 260,
+    zIndex: 3,
+  },
+  RestaurantCard: {
+    ...getShadow(3),
+    alignSelf: 'center',
+    width: wp(100) - 30,
+    marginBottom: 22,
+    borderRadius: 6,
+  },
+  tinyDetail1: {
+    fontSize: 13,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    color: Colors.dark,
+  },
+  redPending: {
+    paddingVertical: 2,
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    borderRadius: 6,
+    backgroundColor: Colors.red,
+  },
+  redPending2: {
+    paddingVertical: 2,
+    alignItems: 'center',
+    paddingHorizontal: 5,
+    borderRadius: 6,
+    backgroundColor: Colors.red,
+    position: 'absolute',
+    top: 10,
+    left: 15,
+  },
+  tinyDetail2x: {
+    fontSize: 11,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    color: Colors.white,
+  },
+  tinyDetail2: {
+    fontSize: 13,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    color: Colors.Grey6,
+  },
+  tinyDetail3: {
+    fontSize: 11,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    color: Colors.white,
+  },
+  tinyDetail4: {},
+  time: {
+    fontSize: 12,
+    color: Colors.GreyTransparent6,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    margin: 6,
+  },
+  time2: {
+    fontSize: 14,
+    color: Colors.GreyTransparent6,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    margin: 6,
+  },
+  PortraitImageA: {
+    borderRadius: 6,
+    height: 250,
+    width: 200,
+    resizeMode: 'cover',
+    marginBottom: 18,
+  },
+  PortraitImageB: {
+    borderRadius: 6,
+    height: 120,
+    width: 165,
+    resizeMode: 'cover',
+    marginBottom: 18,
+  },
+  heart: {width: 25, height: 25, resizeMode: 'contain'},
+  heartPos: {
+    top: 8,
+    position: 'absolute',
+    right: 3,
+    zIndex: 8,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    //...getShadow(3, Colors.Grey0),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  PortraitViewA: {
+    borderRadius: 6,
+    width: 200,
+    marginHorizontal: 8,
+  },
+  PortraitViewB: {
+    borderRadius: 6,
+    width: 165,
+    marginHorizontal: 8,
+  },
+  TextBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 15,
+    marginVertical: 28,
+    marginBottom: 20,
+  },
+  TextBtntitle: {
+    fontSize: 28,
+    color: Colors.green,
+    fontFamily: TextFamily.ROBOTO_BLACK,
+  },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: wp(100) - 30,
+    paddingHorizontal: 15,
+    marginTop: 30,
+    borderRadius: 6,
+    alignSelf: 'center',
+    height: 115,
+    ...getShadow(2, Colors.green),
+  },
+  cardTitle: {
+    color: Colors.white,
+    fontSize: 20,
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    marginBottom: 10,
+  },
+  cardSubTitle: {
+    fontSize: 14,
+    width: '90%',
+    fontFamily: TextFamily.ROBOTO_LIGHT,
+    color: Colors.white,
+  },
+  ScreenContain: {flex: 1, backgroundColor: Colors.white},
+  rowify: {flexDirection: 'row', alignItems: 'center'},
+  shapedCont: {
+    borderTopLeftRadius: 800,
+    backgroundColor: Colors.dark,
+    height: 60,
+    width: 60,
+  },
+  PopularCardView: {
+    marginHorizontal: 5,
+    height: 140,
+    paddingHorizontal: 5,
+    justifyContent: 'flex-end',
+    paddingBottom: 10,
+  },
+  FoodTitle: {
+    position: 'absolute',
+    top: 100,
+    zIndex: 3,
+    alignSelf: 'center',
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    textAlign: 'center',
+    fontSize: 16,
+  },
+  FoodTitleB: {
+    fontFamily: TextFamily.ROBOTO_REGULAR,
+    fontSize: 17,
+  },
+  FoodTitleC: {
+    fontFamily: TextFamily.ROBOTO_LIGHT,
+    fontSize: 13,
+    color: Colors.Grey6,
+  },
+  FoodStyle: {
+    width: 85,
+    height: 85,
+    borderRadius: 43,
+    alignSelf: 'center',
+    position: 'absolute',
+    top: 0,
+    zIndex: 3,
+  },
+  TrapezoidStyle: {
+    width: 105,
+    borderBottomColor: Colors.white,
+    borderBottomWidth: 100,
+    borderLeftWidth: 14,
+    borderRightWidth: 14,
+    borderRadius: 5,
+    borderRightColor: Colors.transparent,
+    borderLeftColor: Colors.transparent,
+    ...getShadow(Platform.OS === 'android' ? 0 : 4, Colors.transparent),
+  },
+  heartx: {
+    width: 50,
+    height: 50,
+  },
+  heartShape: {
+    width: 30,
+    height: 45,
+    position: 'absolute',
+    top: 0,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    backgroundColor: '#6427d1',
+  },
+  leftHeart: {
+    transform: [{rotate: '-45deg'}],
+    left: 5,
+  },
+  rightHeart: {
+    transform: [{rotate: '45deg'}],
+    right: 5,
+  },
+});
+
+export default {
+  LocationEnabler,
+  PasswordReset,
+  FoodCard1,
+  ChooseSubItem,
+  FoodCard2,
+  RestaurantCard,
+};

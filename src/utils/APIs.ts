@@ -154,16 +154,39 @@ const getHomePublicData = () => {
   const promise2 = getBanners();
   const promise3 = getFoodPlaces({});
   const promise4 = getFoodPlaces({page: 1, limit: 10});
-  return Promise.all([promise1, promise2, promise3, promise4])
+  const promise5 = getFoodPlaces({page: 1, limit: 8});
+  return Promise.all([promise1, promise2, promise3, promise4, promise5])
     .then(RES => {
       if (Array.isArray(RES)) {
-        const [featuredFoods, banners, foodPlaces, allFoodPlace] = RES;
-        return {featuredFoods, banners, foodPlaces, allFoodPlace};
+        const [
+          featuredFoods,
+          banners,
+          foodPlaces,
+          allFoodPlace,
+          featuredFoodPlaces,
+        ] = RES;
+        return {
+          featuredFoods,
+          banners,
+          foodPlaces,
+          allFoodPlace,
+          featuredFoodPlaces,
+        };
       } else {
         return null;
       }
     })
     .catch(() => null);
+};
+const getMenuForRestaurant = ({rid}: {rid: number}) => {
+  return axios
+    .get(`/menus?rid=${rid}`)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 200 && Array.isArray(data) && data.length > 0
+        ? data
+        : [];
+    })
+    .catch(() => []);
 };
 export default {
   signIn,
@@ -175,4 +198,5 @@ export default {
   getBanners,
   getFoodPlaces,
   getHomePublicData,
+  getMenuForRestaurant,
 };

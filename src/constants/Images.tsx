@@ -29,7 +29,9 @@ export default {
   ok: require('../assets/icons/confirm.png'),
   ok2: require('../assets/icons/confirmr.png'),
   cross: require('../assets/icons/cancel.png'),
+
   //-------------------
+  closed: require('../assets/icons/closed.jpg'),
   visa: require('../assets/icons/visa.png'),
   camera: require('../assets/icons/camera.png'),
   enableLocation: require('../assets/images/locator.png'),
