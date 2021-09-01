@@ -60,28 +60,33 @@ const HomeScreen = ({navigation}: {navigation: object}) => {
       <View style={styles.ScreenContain}>
         <Headers.HeaderA />
         <Headers.SearchBar />
+
         {!loading && (
           <ScrollView
             contentContainerStyle={{
               paddingTop: 10,
               paddingBottom: bottom + 100,
             }}>
-            <ScrollView horizontal={true} contentContainerStyle={styles.rowify}>
-              {featuredFoodCat.map((item, index) => {
-                return (
-                  <TouchableWithoutFeedback key={'Item' + index}>
-                    <View style={styles.PopularCardView}>
-                      <View style={styles.TrapezoidStyle} />
-                      <Image
-                        source={{uri: item.image}}
-                        style={styles.FoodStyle}
-                      />
-                      <Text style={styles.FoodTitle}>{item.name}</Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                );
-              })}
-            </ScrollView>
+            {featuredFoodCat.length > 0 && (
+              <ScrollView
+                horizontal={true}
+                contentContainerStyle={styles.rowify}>
+                {featuredFoodCat.map((item, index) => {
+                  return (
+                    <TouchableWithoutFeedback key={'Item' + index}>
+                      <View style={styles.PopularCardView}>
+                        <View style={styles.TrapezoidStyle} />
+                        <Image
+                          source={{uri: item.image}}
+                          style={styles.FoodStyle}
+                        />
+                        <Text style={styles.FoodTitle}>{item.name}</Text>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  );
+                })}
+              </ScrollView>
+            )}
             {banners.length > 0 && (
               <TouchableOpacity style={styles.card} activeOpacity={0.85}>
                 <View style={{flex: 1}}>
@@ -97,45 +102,66 @@ const HomeScreen = ({navigation}: {navigation: object}) => {
                 />
               </TouchableOpacity>
             )}
-            <HeadingLabel title="Discover new places" navigation={navigation} />
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
-              {newPlaces.map((item, index) => {
-                return (
-                  <Cards.FoodCard1
-                    key={'Food_' + index}
-                    restaurant={item}
-                    navigation={navigation}
-                  />
-                );
-              })}
-            </ScrollView>
-            <HeadingLabel title="Featured" navigation={navigation} />
-            <ScrollView
-              horizontal={true}
-              contentContainerStyle={[styles.rowify, {paddingHorizontal: 7}]}>
-              {featuredPlaces.map((item, index) => {
-                return (
-                  <Cards.FoodCard2
-                    key={'FoodCard_' + index}
-                    restaurant={item}
-                    navigation={navigation}
-                  />
-                );
-              })}
-            </ScrollView>
-            <HeadingLabel title="All Restaurants" navigation={navigation} />
-            {allPlaces.map((item: foodPlace, index: number) => {
-              //const [opened, Start, End] = isItOpenNow(item.timing);
-              return (
-                <Cards.RestaurantCard
-                  key={'_RestCard' + index}
+            {newPlaces.length > 0 && (
+              <Fragment>
+                <HeadingLabel
+                  title="Discover new places"
                   navigation={navigation}
-                  restaurant={item}
                 />
-              );
-            })}
+                <ScrollView
+                  horizontal={true}
+                  contentContainerStyle={[
+                    styles.rowify,
+                    {paddingHorizontal: 7},
+                  ]}>
+                  {newPlaces.map((item, index) => {
+                    return (
+                      <Cards.FoodCard1
+                        key={'Food_' + index}
+                        restaurant={item}
+                        navigation={navigation}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </Fragment>
+            )}
+            {featuredPlaces.length > 0 && (
+              <Fragment>
+                <HeadingLabel title="Featured" navigation={navigation} />
+                <ScrollView
+                  horizontal={true}
+                  contentContainerStyle={[
+                    styles.rowify,
+                    {paddingHorizontal: 7},
+                  ]}>
+                  {featuredPlaces.map((item, index) => {
+                    return (
+                      <Cards.FoodCard2
+                        key={'FoodCard_' + index}
+                        restaurant={item}
+                        navigation={navigation}
+                      />
+                    );
+                  })}
+                </ScrollView>
+              </Fragment>
+            )}
+            {allPlaces.length > 0 && (
+              <Fragment>
+                <HeadingLabel title="All Restaurants" navigation={navigation} />
+                {allPlaces.map((item: foodPlace, index: number) => {
+                  //const [opened, Start, End] = isItOpenNow(item.timing);
+                  return (
+                    <Cards.RestaurantCard
+                      key={'_RestCard' + index}
+                      navigation={navigation}
+                      restaurant={item}
+                    />
+                  );
+                })}
+              </Fragment>
+            )}
           </ScrollView>
         )}
       </View>

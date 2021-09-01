@@ -1,12 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {Fragment, useEffect} from 'react';
-import {
-  StatusBar,
-  Platform,
-  Button,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import {StatusBar, Platform, TouchableOpacity, Text} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import SplashScreen from 'react-native-splash-screen';
 import {useSelector} from 'react-redux';
@@ -35,11 +29,14 @@ import AllAddressScreen from '@screens/allAddressScreen';
 import StoreSearchScreen from '@screens/searchPickupStore';
 //===================================================================
 const {Navigator, Screen} = createStackNavigator();
-
+const isAndroid = Platform.OS === 'android';
 const Stack = () => {
   const {filterBottomSheet, loginBottomSheet} = useSelector(
     ({APP}: {APP: AppStatesInterface}) => APP,
   );
+
+  let filterBottomSheetD: boolean = isAndroid ? filterBottomSheet : true;
+  let loginBottomSheetD: boolean = isAndroid ? loginBottomSheet : true;
   useEffect(() => {
     Platform.OS === 'android' &&
       (StatusBar.setTranslucent(true),
@@ -278,10 +275,10 @@ const Stack = () => {
           options={{headerShown: false}}
         />
       </Navigator>
-      {filterBottomSheet && (
+      {filterBottomSheetD && (
         <BottomSheet.BottomSheetSheetA status={filterBottomSheet} />
       )}
-      {loginBottomSheet && (
+      {loginBottomSheetD && (
         <BottomSheet.BottomSheetLogin status={loginBottomSheet} />
       )}
     </Fragment>

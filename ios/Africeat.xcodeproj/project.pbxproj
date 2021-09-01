@@ -22,6 +22,7 @@
 		B1573DB54420A81E5A10FF5B /* libPods-Africeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB22F3FE4A21436ECE22FE97 /* libPods-Africeat.a */; };
 		C1FC0C02F93F4264964345A7 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A7AF528B288E477FBF6C55A2 /* Roboto-Bold.ttf */; };
 		CC9CD607425446349860B1F6 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EE91ED0A3B7C4357B5E3F5A6 /* Roboto-Italic.ttf */; };
+		E563E27926DF5AAD001AD45E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E563E27826DF5AAD001AD45E /* GoogleService-Info.plist */; };
 		E591C98926DE189400B765EA /* swiftBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E591C98826DE189400B765EA /* swiftBridge.swift */; };
 		E6792F4EC44543BCB43621CD /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFA5D2A3DBAA4DF6BCA9C2E8 /* Roboto-Medium.ttf */; };
 		EAD92FB5940B4AEBB9CDF691 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2106EA3A3556450290E87CC6 /* Roboto-LightItalic.ttf */; };
@@ -66,6 +67,8 @@
 		C4472C96B14F4C50BB151270 /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-ThinItalic.ttf"; path = "../src/assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; };
 		CE11CA82B4724D5C9D903DD9 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../src/assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		D5C31BEE38E61B5E207F6914 /* Pods-Africeat-AfriceatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Africeat-AfriceatTests.debug.xcconfig"; path = "Target Support Files/Pods-Africeat-AfriceatTests/Pods-Africeat-AfriceatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E563E27826DF5AAD001AD45E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E563E27A26DF5C42001AD45E /* Africeat.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Africeat.entitlements; path = Africeat/Africeat.entitlements; sourceTree = "<group>"; };
 		E591C98726DE189400B765EA /* Africeat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Africeat-Bridging-Header.h"; sourceTree = "<group>"; };
 		E591C98826DE189400B765EA /* swiftBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swiftBridge.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -113,6 +116,7 @@
 		13B07FAE1A68108700A75B9A /* Africeat */ = {
 			isa = PBXGroup;
 			children = (
+				E563E27A26DF5C42001AD45E /* Africeat.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -145,6 +149,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E563E27826DF5AAD001AD45E /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Africeat */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* AfriceatTests */,
@@ -294,6 +299,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				E563E27926DF5AAD001AD45E /* GoogleService-Info.plist in Resources */,
 				1425D06792FB46799CEE1884 /* Roboto-Black.ttf in Resources */,
 				FB4674F771E2471686180824 /* Roboto-BlackItalic.ttf in Resources */,
 				C1FC0C02F93F4264964345A7 /* Roboto-Bold.ttf in Resources */,
@@ -561,23 +567,29 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = Africeat/Africeat.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Africeat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.africeat.app;
+				PRODUCT_BUNDLE_IDENTIFIER = africeat.co.uk.customer;
 				PRODUCT_NAME = Africeat;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Africeat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -588,21 +600,27 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_ENTITLEMENTS = Africeat/Africeat.entitlements;
+				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = Africeat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				"IPHONEOS_DEPLOYMENT_TARGET[sdk=macosx*]" = 14.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.africeat.app;
+				PRODUCT_BUNDLE_IDENTIFIER = africeat.co.uk.customer;
 				PRODUCT_NAME = Africeat;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Africeat-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
