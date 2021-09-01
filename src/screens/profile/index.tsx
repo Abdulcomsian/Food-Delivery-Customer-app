@@ -9,12 +9,13 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
 import {useSafeAreaInsets, EdgeInsets} from 'react-native-safe-area-context';
 import {HeaderBackButton} from '@react-navigation/stack';
 import {Images, Colors, TextFamily} from '@constants';
 import getShadow from '@utils/shadow';
+import Actions from '@redux/actions';
 import {InitialUserInterface} from '@constants/interfaces';
 import {navigate} from '@navigatorHelper';
 const ProfileScreen = ({
@@ -27,6 +28,7 @@ const ProfileScreen = ({
   const {loggedIn, detail} = useSelector(
     ({USER}: {USER: InitialUserInterface}) => USER,
   );
+  const dispatch = useDispatch();
   const {top, bottom}: EdgeInsets = useSafeAreaInsets();
   return (
     <View style={styles.cont}>
@@ -46,30 +48,57 @@ const ProfileScreen = ({
           {title: 'My Notification', nav: 'alerts'},
           {title: 'Terms & Condition', nav: ''},
           {title: 'Help', nav: ''},
+          {title: 'Logout', nav: ''},
         ].map(({title, nav}, index) => (
-          <ProfileBtn key={'_Btn' + index} title={title} nav={nav} />
+          <ProfileBtn
+            navigation={navigation}
+            key={'_Btn' + index}
+            title={title}
+            nav={nav}
+            dispatch={dispatch}
+          />
         ))}
       </ScrollView>
     </View>
   );
 };
 
-const ProfileBtn = ({title = '', nav}: {title: string; nav: string}) => (
+const ProfileBtn = ({
+  title = '',
+  nav,
+  dispatch,
+  navigation,
+}: {
+  title: string;
+  nav: string;
+  dispatch: Function;
+  navigation: any;
+}) => (
   <TouchableOpacity
-    style={styles.profileBtn}
+    style={[
+      styles.profileBtn,
+      {backgroundColor: title === 'Logout' ? Colors.iosRedL : Colors.white},
+    ]}
     activeOpacity={0.85}
     onPress={() => {
-      nav && navigate(nav);
+      if (title === 'Logout') {
+        Actions.userLogout()(dispatch);
+        navigation.goBack();
+      } else {
+        nav && navigate(nav);
+      }
     }}>
-    <Text style={styles.profileBtnText}>{title}</Text>
-    {/* <Image
-      source={Images.redRightArrow}
-      style={{width: 27, height: 22, resizeMode: 'contain'}}
-    /> */}
+    <Text
+      style={[
+        styles.profileBtnText,
+        {color: title === 'Logout' ? Colors.white : Colors.green},
+      ]}>
+      {title}
+    </Text>
     <HeaderBackButton
       labelVisible={false}
       style={{transform: [{rotate: '180deg'}]}}
-      tintColor={Colors.red}
+      tintColor={title === 'Logout' ? Colors.white : Colors.red}
     />
   </TouchableOpacity>
 );
@@ -82,7 +111,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   profileBtnText: {
-    color: Colors.green,
     fontFamily: TextFamily.ROBOTO_REGULAR,
     fontSize: 18,
   },

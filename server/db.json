@@ -1,11 +1,12 @@
 {
   "users": [
     {
-      "id": 1,
-      "name": "AfricEat Client1",
-      "email": "client1@africeat.com",
-      "password": "password111",
-      "phone": "+923035666666"
+      "email": "Imrannoor731@gmail.com",
+      "phone": "03035191910",
+      "fId": "uXVLChur9jNg9arygx8PHNYx9Fy1",
+      "name": "Imran Noor",
+      "DoB": "09/01/2021",
+      "id": 1
     }
   ],
   "notifications": [
@@ -94,10 +95,30 @@
       "Avatar": "https://www.recipetineats.com/wp-content/uploads/2020/01/Fried-Chicken_2-SQ.jpg",
       "created_at": "9-9-2021",
       "items": [
-        {"id": 7, "name": "Large Pizza", "qty": 2, "price": 30.99},
-        {"id": 8, "name": "Baryani", "qty": 2, "price": 12.49},
-        {"id": 9, "name": "Large Kripo", "qty": 3, "price": 12},
-        {"id": 10, "name": "Litter Coke", "qty": 2, "price": 5}
+        {
+          "id": 7,
+          "name": "Large Pizza",
+          "qty": 2,
+          "price": 30.99
+        },
+        {
+          "id": 8,
+          "name": "Baryani",
+          "qty": 2,
+          "price": 12.49
+        },
+        {
+          "id": 9,
+          "name": "Large Kripo",
+          "qty": 3,
+          "price": 12
+        },
+        {
+          "id": 10,
+          "name": "Litter Coke",
+          "qty": 2,
+          "price": 5
+        }
       ],
       "deliveryCharges": 20
     },
@@ -114,9 +135,24 @@
       "Avatar": "https://content.jdmagicbox.com/comp/def_content/fried-chicken-restaurants/hxyejoaspu-fried-chicken-restaurants-4-qtr4s.jpg",
       "created_at": "10-9-2021",
       "items": [
-        {"id": 1, "name": "Fries", "qty": 2, "price": 8.99},
-        {"id": 2, "name": "Chili BUrger", "qty": 1, "price": 12.49},
-        {"id": 3, "name": "Litter Coke", "qty": 1, "price": 5}
+        {
+          "id": 1,
+          "name": "Fries",
+          "qty": 2,
+          "price": 8.99
+        },
+        {
+          "id": 2,
+          "name": "Chili BUrger",
+          "qty": 1,
+          "price": 12.49
+        },
+        {
+          "id": 3,
+          "name": "Litter Coke",
+          "qty": 1,
+          "price": 5
+        }
       ],
       "deliveryCharges": 19
     }
@@ -276,7 +312,7 @@
       "avatar": "https://www.savourfoods.com.pk/images/gallery/01.jpg",
       "foodProvider": "Savour",
       "foodProviderAddress": "Savour Rawalpindi",
-      "reviewStars": 4.0,
+      "reviewStars": 4,
       "ratings": 2000,
       "deliveryCharges": 200,
       "created_at": "2-2-2021",
@@ -406,11 +442,36 @@
         }
       ]
     },
-    {"rid": 1, "cat": "Pasta", "id": 3, "items": []},
-    {"rid": 1, "cat": "BBQ", "id": 4, "items": []},
-    {"rid": 1, "cat": "Beverage", "id": 5, "items": []},
-    {"rid": 1, "cat": "Desserts", "id": 6, "items": []},
-    {"rid": 2, "cat": "Others", "id": 7, "items": []}
+    {
+      "rid": 1,
+      "cat": "Pasta",
+      "id": 3,
+      "items": []
+    },
+    {
+      "rid": 1,
+      "cat": "BBQ",
+      "id": 4,
+      "items": []
+    },
+    {
+      "rid": 1,
+      "cat": "Beverage",
+      "id": 5,
+      "items": []
+    },
+    {
+      "rid": 1,
+      "cat": "Desserts",
+      "id": 6,
+      "items": []
+    },
+    {
+      "rid": 2,
+      "cat": "Others",
+      "id": 7,
+      "items": []
+    }
   ],
   "categories": []
 }

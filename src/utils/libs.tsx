@@ -1,3 +1,6 @@
+import {Keyboard, KeyboardEvent} from 'react-native';
+import {useEffect, useState} from 'react';
+import auth from '@react-native-firebase/auth';
 const DeveloperMode = true;
 const devLogger = (title = '', log = '') => {
   if (__DEV__ && DeveloperMode) {
@@ -8,6 +11,11 @@ const getTextSizeStyle = (fontSize: number) => ({
   fontSize,
   lineHeight: fontSize * 1.618,
 });
+const passRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,30}$/g;
+const passwordValidator = (password: string) => {
+  return passRegex.test(password);
+};
 const emailIsValid = (email: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const getCustomData = date => {
@@ -218,6 +226,37 @@ const convertTto24 = (time12h: string) => {
   }
   return parseInt(hours, 10);
 };
+const emailExist = async (email: string) => {
+  return await auth()
+    .fetchSignInMethodsForEmail(email)
+    .then(res => {
+      if (res) {
+        return res.length !== 0 ? true : false;
+      } else {
+        return false;
+      }
+    });
+};
+const useKeyboard = (): [number] => {
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const onKeyboardDidShow = (e: KeyboardEvent): void => {
+    setKeyboardHeight(e.endCoordinates.height);
+  };
+  const onKeyboardDidHide = (): void => {
+    setKeyboardHeight(0);
+  };
+
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', onKeyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', onKeyboardDidHide);
+    return (): void => {
+      Keyboard.removeListener('keyboardDidShow', onKeyboardDidShow);
+      Keyboard.removeListener('keyboardDidHide', onKeyboardDidHide);
+    };
+  }, []);
+
+  return [keyboardHeight];
+};
 export {
   isItOpenNow,
   objectIsEmpty,
@@ -227,4 +266,8 @@ export {
   devLogger,
   getPriceFormat,
   getFormattedDate,
+  passwordValidator,
+  emailExist,
+  useKeyboard,
+  emailIsValid,
 };

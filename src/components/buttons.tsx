@@ -2,16 +2,21 @@
 import React from 'react';
 import {TouchableOpacity, Text, TextStyle, ViewStyle} from 'react-native';
 import {Colors, TextFamily} from '@constants';
+import {HeaderBackButton, HeaderBackground} from '@react-navigation/stack';
 const ButtonA = ({
   style = {},
   textStyle = {},
   title = '',
   onPress = () => {},
+  renderNextIcon = false,
+  renderNextIconColor = '#fff',
 }: {
   style?: ViewStyle;
   title?: string;
+  renderNextIconColor?: string;
   textStyle?: TextStyle;
   onPress?: Function;
+  renderNextIcon?: boolean;
 }) => {
   return (
     <TouchableOpacity
@@ -24,6 +29,8 @@ const ButtonA = ({
         width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 10,
         ...style,
       }}>
       <Text
@@ -35,6 +42,18 @@ const ButtonA = ({
         }}>
         {title}
       </Text>
+      {renderNextIcon && (
+        <HeaderBackButton
+          labelVisible={false}
+          style={{
+            transform: [{rotate: '180deg'}],
+            alignSelf: 'flex-end',
+            position: 'absolute',
+            right: 10,
+          }}
+          tintColor={renderNextIconColor}
+        />
+      )}
     </TouchableOpacity>
   );
 };

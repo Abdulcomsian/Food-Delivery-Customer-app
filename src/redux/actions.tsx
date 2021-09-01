@@ -5,7 +5,7 @@ const setLoader = (payload: any) => (dispatch: Function) => {
 };
 
 //======User Actions
-const userAuthenticate = (payload: any) => (dispatch: Function) => {
+const letAuthorizeUser = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.USER_AUTHORIZE, payload});
 };
 const userLogout = () => (dispatch: Function) => {
@@ -44,7 +44,7 @@ export default {
   setLoader,
   resetCart,
   updateCart,
-  userAuthenticate,
+  letAuthorizeUser,
   userLogout,
   toggleBottomFilter,
   closeBottomFilter,

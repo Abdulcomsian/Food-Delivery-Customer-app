@@ -1,5 +1,11 @@
 import Axios, {AxiosResponse, AxiosError} from 'axios';
-import {order, foodCategorie, banner, foodPlace} from '@constants/interfaces';
+import {
+  order,
+  foodCategorie,
+  banner,
+  foodPlace,
+  userModel,
+} from '@constants/interfaces';
 const baseURL = 'http://localhost:3000/';
 const axios = Axios.create({
   baseURL,
@@ -41,6 +47,14 @@ axios.interceptors.response.use(
   error => callBackFun('ResponseError', error),
 );
 //requestMethods
+const signUp = (payload: userModel) => {
+  return axios
+    .post('/users', payload)
+    .then(({data, status}: AxiosResponse) => {
+      return status === 201 ? data : null;
+    })
+    .catch(() => null);
+};
 const signIn = ({email, password}: {password: string; email: string}) => {
   return axios
     .get('/users?email=' + email)
@@ -190,6 +204,7 @@ const getMenuForRestaurant = ({rid}: {rid: number}) => {
 };
 export default {
   signIn,
+  signUp,
   getNotifications,
   getOrderList,
   readNotification,

@@ -7,7 +7,14 @@ export interface InitialUserInterface {
   online: boolean;
   detail: object;
 }
-
+export interface userModel {
+  id?: number;
+  fId: string;
+  name: string;
+  email: string;
+  DoB: string;
+  phone: string;
+}
 export interface OrdersStatesInterface {
   currentOrder: object | null;
   cart: object;
