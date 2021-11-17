@@ -49,7 +49,7 @@ axios.interceptors.response.use(
 //requestMethods
 const signUp = (payload: userModel) => {
   return axios
-    .post('/users', payload)
+    .post('/users', {...payload, type: 'c'})
     .then(({data, status}: AxiosResponse) => {
       return status === 201 ? data : null;
     })
@@ -66,6 +66,17 @@ const signIn = ({email, password}: {password: string; email: string}) => {
           : {error: 'Password not correct'};
       }
       return {error: 'Email not correct'};
+    })
+    .catch(() => null);
+};
+const getLocalDBUserDetail = (fId: string) => {
+  return axios
+    .get(`/users?fId=${fId}`)
+    .then(({data, status}: AxiosResponse) => {
+      if (status === 200) {
+        return data.length ? data[0] : null;
+      }
+      return null;
     })
     .catch(() => null);
 };
@@ -205,6 +216,7 @@ const getMenuForRestaurant = ({rid}: {rid: number}) => {
 export default {
   signIn,
   signUp,
+  getLocalDBUserDetail,
   getNotifications,
   getOrderList,
   readNotification,

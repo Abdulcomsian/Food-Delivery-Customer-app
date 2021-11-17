@@ -1,4 +1,5 @@
 import ActionTypes from './types';
+import auth from '@react-native-firebase/auth';
 //=======App Loading Actions
 const setLoader = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.FETCHING_LOADING, payload});
@@ -9,6 +10,7 @@ const letAuthorizeUser = (payload: any) => (dispatch: Function) => {
   dispatch({type: ActionTypes.USER_AUTHORIZE, payload});
 };
 const userLogout = () => (dispatch: Function) => {
+  auth().signOut();
   dispatch({type: ActionTypes.USER_LOGOUT});
 };
 //======App Actions

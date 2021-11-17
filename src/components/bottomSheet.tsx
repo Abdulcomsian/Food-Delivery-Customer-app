@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useMemo, useCallback} from 'react';
+import React, {useEffect, useRef, useMemo, useCallback, useState} from 'react';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   Image,
   View,
   Text,
+  Keyboard,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {widthPercentageToDP as WP} from 'react-native-responsive-screen';
@@ -15,6 +16,9 @@ import {useDispatch} from 'react-redux';
 import Actions from '@redux/actions';
 import {navigate} from '@navigatorHelper';
 import {Colors, Images, TextFamily} from '@constants';
+import {emailIsValid, useKeyboard} from '@utils/libs';
+import APIs from '@utils/APIs';
+import Auth from '@react-native-firebase/auth';
 import Inputs from './inputs';
 import Buttons from './buttons';
 const BottomSheetSheetA = ({status}: {status: boolean}) => {
@@ -23,7 +27,6 @@ const BottomSheetSheetA = ({status}: {status: boolean}) => {
   const FilterBottomSheet = useRef<BottomSheet>(null);
   const snapFilterBottomPoints = useMemo(() => [0, 470 + bottom], []);
   const handleFilterBottomSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
     index === 0 && handleIt(false);
   }, []);
   const handleIt = (open = true) => {
@@ -206,21 +209,69 @@ const BottomSheetSheetA = ({status}: {status: boolean}) => {
   );
 };
 const BottomSheetLogin = ({status = false}: {status?: boolean}) => {
+  const [keyBHeight] = useKeyboard();
   const dispatch = useDispatch();
   const {bottom} = useSafeAreaInsets();
   const FilterBottomSheet = useRef<BottomSheet>(null);
-  const snapFilterBottomPoints = useMemo(() => [0, 455 + bottom], []);
+  const [email, setEmail] = useState<string>('');
+  const [errEmail, setErrEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [errPassword, setErrPassword] = useState<string>('');
+  const [secureTextEntry, setSecureTextEntry] = useState<boolean>(true);
+
+  const snapFilterBottomPoints = useMemo(
+    () => [0, 455 + (keyBHeight ? keyBHeight : bottom)],
+    [keyBHeight, bottom],
+  );
   const handleFilterBottomSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
     index === 0 && handleIt(false);
+  }, []);
+  const handleItCallback = useCallback((open = true) => {
+    FilterBottomSheet.current?.[open ? 'expand' : 'close']();
+    !open && Actions.closeBottomLogin()(dispatch);
   }, []);
   const handleIt = (open = true) => {
     FilterBottomSheet.current?.[open ? 'expand' : 'close']();
     !open && Actions.closeBottomLogin()(dispatch);
   };
   useEffect(() => {
-    handleIt(status);
-  }, [status]);
+    handleItCallback(status);
+  }, [status, handleItCallback]);
+  const validateFirst = () => {
+    Keyboard.dismiss();
+    if (password.length < 8) {
+      setErrPassword('password should be equal or more then 8 characters');
+      return false;
+    }
+    if (emailIsValid(email)) {
+      letsTryLogin(email, password);
+    } else {
+      setErrEmail('email is not valid');
+      return false;
+    }
+  };
+  const letsTryLogin = (Email: string, Password: string) => {
+    Auth()
+      .signInWithEmailAndPassword(Email, Password)
+      .then(({user}) => {
+        if (user.uid) {
+          APIs.getLocalDBUserDetail(user.uid).then(payload => {
+            if (payload) {
+              handleIt(false);
+              Actions.letAuthorizeUser(payload)(dispatch);
+            }
+          });
+        }
+      })
+      .catch(error => {
+        if (error.code === 'auth/wrong-password') {
+          setErrPassword('wrong password');
+        } else if (error.code === 'auth/user-not-found') {
+          setErrEmail('User not found');
+        }
+      });
+  };
   return (
     <BottomSheet
       ref={FilterBottomSheet}
@@ -257,20 +308,27 @@ const BottomSheetLogin = ({status = false}: {status?: boolean}) => {
         <Inputs.InputA
           style={{width: WP(100) - 50, alignSelf: 'center'}}
           placeHolder="Email"
+          value={email}
+          keyboardType="email-address"
+          setValue={(txt: string) => {
+            setEmail(txt);
+            errEmail && setErrEmail('');
+          }}
+          error={errEmail}
         />
         <Inputs.InputA
           style={{width: WP(100) - 50, alignSelf: 'center'}}
           placeHolder="Password"
+          value={password}
+          secureTextEntry={secureTextEntry}
+          setValue={(txt: string) => {
+            setPassword(txt);
+            errPassword && setErrPassword('');
+          }}
+          error={errPassword}
         />
         <Buttons.ButtonA
-          onPress={() => {
-            Actions.userAuthenticate({
-              name: 'Ímran Noor',
-              phone: '03035191910',
-              avatar: '',
-            })(dispatch);
-            handleIt(false);
-          }}
+          onPress={validateFirst}
           title={'Login'}
           style={{
             backgroundColor: Colors.red,

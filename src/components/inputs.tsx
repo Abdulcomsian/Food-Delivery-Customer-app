@@ -28,7 +28,7 @@ const InputA = ({
   style?: ViewStyle;
   placeHolder?: string;
   max?: number;
-  error: string;
+  error?: string;
 }) => {
   return (
     <Fragment>
@@ -133,7 +133,7 @@ const InputB = ({
   setValue?: Function;
   style?: ViewStyle;
   placeHolder?: string;
-  error: string;
+  error?: string;
 }) => (
   <Fragment>
     <View

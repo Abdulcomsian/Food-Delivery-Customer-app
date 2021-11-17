@@ -31,26 +31,30 @@ const HomeScreen = ({navigation}: {navigation: object}) => {
   const [locEModal, setLocEModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    APIS.getHomePublicData()
-      .then(res => {
-        if (res) {
-          const {
-            featuredFoods,
-            banners: bnners,
-            foodPlaces,
-            allFoodPlace,
-            featuredFoodPlaces,
-          } = res;
-          setFeaturedFoodCat(featuredFoods);
-          setBanners(bnners);
-          setNewPlaces(foodPlaces);
-          setAllPlaces(allFoodPlace);
-          setFeaturedPlaces(featuredFoodPlaces);
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    setTimeout(
+      () =>
+        APIS.getHomePublicData()
+          .then(res => {
+            if (res) {
+              const {
+                featuredFoods,
+                banners: bnners,
+                foodPlaces,
+                allFoodPlace,
+                featuredFoodPlaces,
+              } = res;
+              setFeaturedFoodCat(featuredFoods);
+              setBanners(bnners);
+              setNewPlaces(foodPlaces);
+              setAllPlaces(allFoodPlace);
+              setFeaturedPlaces(featuredFoodPlaces);
+            }
+          })
+          .finally(() => {
+            setLoading(false);
+          }),
+      3000,
+    );
     //setLocEModal(true);
   }, []);
   return (
